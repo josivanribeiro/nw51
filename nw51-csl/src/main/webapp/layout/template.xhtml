@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:ui="http://java.sun.com/jsf/facelets">
+	<f:view contentType="text/html">
+		<h:head>
+			<title>NW51 | Online courses of software development</title>
+			<!--script src="//code.jquery.com/jquery-1.10.2.js"></script-->
+  			<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+  			<script src="#{request.contextPath}/resources/js/functions.js" type="text/javascript"></script>
+			<script src="#{request.contextPath}/resources/js/jquery.maskedinput.js" type="text/javascript"></script>			
+			<script src="#{request.contextPath}/resources/js/jquery-scrollto.js" type="text/javascript"></script>
+			<script src="#{request.contextPath}/resources/js/jquery.plugin.js" type="text/javascript"></script>
+			<script src="#{request.contextPath}/resources/js/jquery.maxlength.js" type="text/javascript"></script>
+			<script src="#{request.contextPath}/resources/js/page-title.js" type="text/javascript"></script>
+			<style type="text/css">
+				@import url("#{request.contextPath}/resources/css/style.css");
+				@import url("#{request.contextPath}/resources/css/custom-pf.css");				
+				@import url("#{request.contextPath}/resources/css/datepicker.css");
+				@import url("#{request.contextPath}/resources/css/jquery.maxlength.css");
+			</style>
+			<script type="text/javascript">
+ 			   
+			   $(document).ready(function() {
+				   
+				   configureHeight ("container-content");
+				   
+				   setPageTitle ();
+				   disableStyleSheet ("theme.css");
+				   disableStyleSheet ("primefaces.css");
+				   				   				     
+				   $( "#formSearch\\:txtStartDateFilter" ).datepicker ({
+					    dateFormat: 'dd/mm/yy',
+					    dayNames: ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'],
+					    dayNamesMin: ['D','S','T','Q','Q','S','S','D'],
+					    dayNamesShort: ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb','Dom'],
+					    monthNames: ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'],
+					    monthNamesShort: ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'],
+					    nextText: 'Próximo',
+					    prevText: 'Anterior'
+					});
+				   
+				    $( "#formSearch\\:txtEndDateFilter" ).datepicker ({
+					    dateFormat: 'dd/mm/yy',
+					    dayNames: ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'],
+					    dayNamesMin: ['D','S','T','Q','Q','S','S','D'],
+					    dayNamesShort: ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb','Dom'],
+					    monthNames: ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'],
+					    monthNamesShort: ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'],
+					    nextText: 'Próximo',
+					    prevText: 'Anterior'
+					});
+				    
+				    $( "#formSearch\\:txtStartDateFilter" ).focus(function() {
+				    	removeClasses ();
+				    });
+				    
+				    $( "#formSearch\\:txtEndDateFilter" ).focus(function() {
+				    	removeClasses ();
+				    });
+				    
+				    $("#formSearch\\:txtCpfFilter").mask("999.999.999-99");
+				    
+				    $( ".ui-icon-closethick" ).removeClass( "ui-icon" );
+				    
+			    });
+			   
+			    /**
+				 * Removes css classes of primefaces css.
+				 */
+				function removeClasses () {
+					$( "span" ).removeClass( "ui-icon" );
+			    }
+			    
+			</script>
+								
+		</h:head>
+		<h:body>			
+			<!-- header -->
+			<ui:include src="/layout/header.xhtml" />
+			<!-- page -->
+			<div id="page">
+				<ui:include src="/layout/sessionExpiration.xhtml" />
+				<ui:include src="/layout/changePwd.xhtml" />				
+				<!-- content -->
+				<div id="main-internal">
+					<ui:insert name="body">
+						...
+					</ui:insert>
+				</div>				
+			</div>			
+		</h:body>
+	</f:view>
+</html>

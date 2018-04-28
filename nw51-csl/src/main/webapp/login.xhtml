@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+	    
+	<ui:composition template="/layout/templateLogin.xhtml">
+		<ui:define name="body">
+		
+			<script type="text/javascript">
+					
+					/**
+					 * Handles the login ajax request.
+					 */
+					function handleLoginRequest (xhr, status, args) {
+				        if (args.isLogged) {
+				        	redirectTo (args.redirectToPage);
+				        }
+				    }
+				
+			</script>
+			
+			<div id="container-col-1">
+				<div id="container-form-login">
+					<div id="container-logo-nw51">
+						<h:graphicImage value="/resources/images/logo_nw51_white.png" />
+					</div>
+					<div id="container-logo-ilp">
+						Online courses of software development
+					</div>					
+					<h:form id="formLogin" method="post">
+						<p:messages id="messagesLogin" globalOnly="true" for="formLogin:messagesLogin" showDetail="true" autoUpdate="true" closable="true" />
+						<div class="field-container">							
+							<label id="lblEmail" for="form-login:txtEmail" class="label-field-login">Email</label>
+							<h:inputText id="txtEmail" value="#{loginController.emailForm}" />
+						</div>
+						<div class="password-field-container">
+							<label id="lblPwd" for="form-login:txtPwd" class="label-field-login">Senha</label><br />
+							<h:inputSecret id="txtPwd" value="#{loginController.pwdForm}" maxlength="20" />
+						</div>
+						<div class="button-container">
+							<p:commandButton value="Login" id="buttonLogin" styleClass="buttonLogin" actionListener="#{loginController.doLogin}" update="messagesLogin, txtEmail, txtPwd" oncomplete="handleLoginRequest (xhr, status, args)" onclick="hideWithTimer('formLogin\\:messagesLogin');submitWithTimer('formLogin');" />
+						</div>
+					</h:form>
+				</div>		
+			</div>
+		</ui:define>
+	</ui:composition>
+	
+</html>

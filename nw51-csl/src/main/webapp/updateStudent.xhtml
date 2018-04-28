@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:p="http://primefaces.org/ui">
+	  	    
+	<ui:composition template="/layout/template.xhtml">
+		<ui:define name="body">
+			
+			<script type="text/javascript">
+											
+				$(document).ready(function() {
+					 
+					$("#formUpdateStudent\\:buttonSaveStudent").click(function() {
+						$('body').ScrollTo();
+				    });
+				    
+			    });
+			
+			</script>
+			
+			<div id="container-content">
+				<!-- menuLeft -->
+				<ui:include src="/layout/menuLeft.xhtml" />
+				<div id="container-col-right">					
+					<h:form id="formUpdateStudent">						
+						<f:metadata>
+    						<f:viewParam name="id" value="#{studentController.studentIdForm}"/>
+    						<f:event type="preRenderView" listener="#{studentController.loadById}" />
+						</f:metadata>						
+						<div class="container-profile-img"></div>
+						<p:messages id="messagesUpdateStudent" globalOnly="true" for="formUpdateStudent:messagesUpdateStudent" showDetail="true" autoUpdate="true" closable="true" style="width: 406px;" />						
+						<div class="field-container-default">
+							<h:outputLabel id="labelEmail" for="txtEmail" value="Email" styleClass="label-field" /><br></br>
+							<h:inputText id="txtEmail" value="#{studentController.emailForm}" readonly="true" />
+						</div>
+						<div class="field-container-default">
+							<h:outputLabel id="labelFullName" for="txtFullName" value="Nome Completo" styleClass="label-field" /><br></br>
+							<h:inputText id="txtFullName" value="#{studentController.fullNameForm}" readonly="true" />
+						</div>
+						<div class="field-container-default">
+							<h:outputLabel id="labelCpf" for="txtCpf" value="CPF" styleClass="label-field" /><br></br>
+							<h:inputText id="txtCpf" value="#{studentController.cpfForm}" readonly="true" />
+						</div>
+						<div class="field-container-default">
+							<h:outputLabel id="labelPhone" for="txtPhone" value="Telefone" styleClass="label-field" /><br></br>
+							<h:inputText id="txtPhone" value="#{studentController.phoneForm}" readonly="true" />
+						</div>
+						<div class="field-container-default">
+							<h:outputLabel id="labelMobile" for="txtMobile" value="Celular" styleClass="label-field" /><br></br>
+							<h:inputText id="txtMobile" value="#{studentController.mobileForm}" readonly="true" />
+						</div>
+						<div class="field-container-default">
+							<h:outputLabel id="labelJoinDate" for="txtJoinDate" value="Data de Matrícula" styleClass="label-field" /><br></br>
+							<h:inputText id="txtJoinDate" value="#{studentController.joinDateForm}" readonly="true">
+								<f:convertDateTime pattern="d/M/yyyy HH:mm" />							
+							</h:inputText>
+						</div>
+						<div class="field-container-default">
+							<h:outputLabel id="labelExpirationDate" for="txtExpirationDate" value="Data de Expiração" styleClass="label-field" /><br></br>
+							<h:inputText id="txtExpirationDate" value="#{studentController.expirationDateForm}" readonly="true">
+								<f:convertDateTime pattern="d/M/yyyy HH:mm" />							
+							</h:inputText>
+						</div>
+						<div class="field-container-default">
+							<h:outputLabel id="labelLastUpdateDate" for="txtLastUpdateDate" value="Data de Última Atualização" styleClass="label-field" /><br></br>
+							<h:inputText id="txtLastUpdateDate" value="#{studentController.lastUpdateDateForm}" readonly="true">
+								<f:convertDateTime pattern="d/M/yyyy HH:mm" />
+							</h:inputText>
+						</div>
+						<div class="field-container-default">
+							<h:outputLabel id="labelLastLoginDate" for="txtLastLoginDate" value="Data de Último Login" styleClass="label-field" /><br></br>
+							<h:inputText id="txtLastLoginDate" value="#{studentController.lastLoginDateForm}" readonly="true">
+								<f:convertDateTime pattern="d/M/yyyy HH:mm" />
+							</h:inputText>
+						</div>
+						<div class="field-container-default">
+							<h:outputLabel id="labelLastLoginIp" for="txtLastLoginIp" value="IP de Último Login" styleClass="label-field" /><br></br>
+							<h:inputText id="txtLastLoginIp" value="#{studentController.lastLoginIpForm}" readonly="true" />
+						</div>
+						<div class="field-container-default-checkbox">
+							<div style="float: left;">
+								<h:selectBooleanCheckbox id="chktStatus" value="#{studentController.statusForm}" disabled="#{studentController.readOnly}" />
+								<h:outputLabel id="lblStatus" for="chktStatus" value="Ativo" styleClass="label-field" />								
+							</div>
+						</div>
+						<div class="button-container" style="display: #{studentController.readOnly ? 'none':'block' };">
+							<p:commandButton id="buttonSaveStudent" value="Salvar" styleClass="button" actionListener="#{studentController.saveStatus}" onclick="hideWithTimer('formUpdateStudent\\:messagesUpdateStudent');" update="messagesUpdateStudent" />
+						</div>		
+					</h:form>																				
+				</div>
+			</div>		
+			
+		</ui:define>
+	</ui:composition>
+	
+</html>

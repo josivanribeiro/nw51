@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:p="http://primefaces.org/ui">
+	  	    
+	<ui:composition template="/layout/template.xhtml">
+		<ui:define name="body">
+			
+			<script type="text/javascript">
+											
+				$(document).ready(function() {
+					
+				    $("#formUpdateProfile\\:buttonSaveProfile").click(function() {
+				    	$('body').ScrollTo();
+				    	resetCheckboxes ('chkRoleId');
+				    });
+				   
+				    
+				    $("#formUpdateProfile\\:buttonDeleteProfile").click(function() {
+				    	$('body').ScrollTo();
+				    	resetCheckboxes ('chkRoleId');
+				    });
+					
+			    });								
+			
+			</script>
+			
+			<div id="container-content">
+				<!-- menuLeft -->
+				<ui:include src="/layout/menuLeft.xhtml" />
+				<div id="container-col-right">					
+					<h:form id="formUpdateProfile" styleClass="default-form">						
+						<f:metadata>
+    						<f:viewParam name="id" value="#{profileController.profileIdForm}"/>
+    						<f:event type="preRenderView" listener="#{profileController.findAll}" />
+    						<f:event type="preRenderView" listener="#{profileController.findAllRole}" />
+    						<f:event type="preRenderView" listener="#{profileController.loadById}" />
+						</f:metadata>
+						<p:messages id="messagesUpdateProfile" globalOnly="true" for="formUpdateProfile:messagesUpdateProfile" showDetail="true" autoUpdate="true" closable="true" style="width: 406px;" />
+						<div class="field-container-default">
+							<h:outputLabel id="labelName" for="txtName" value="Nome" styleClass="label-field" /><br></br>
+							<h:inputText id="txtName" value="#{profileController.nameForm}" readonly="#{profileController.readOnly}" />
+						</div>
+						<label for="field-container-default" class="label-field" style="float: left;">Perfis</label>
+						<div class="field-container-default" style="margin-bottom: 13px; height:auto;">
+							<div id="field-container-datalist">
+								<p:dataList id="dataListRoles" value="#{profileController.roleVOList}" var="roleVO" type="ordered" rendered="#{not empty profileController.roleVOList}">
+							        <input type="checkbox" id="chkRoleId" name="chkRoleId" value="#{roleVO.roleId}" checked="#{roleVO.selected ? 'checked' : ''}" disabled="#{profileController.readOnly ? 'disabled':''}" />
+									<h:outputLabel id="labelRoleChild" for="chkRoleId" value="#{roleVO.name}" styleClass="label-field" />
+							    </p:dataList>								
+							</div>
+						</div>
+						<div class="button-container" style="display: #{profileController.readOnly ? 'none':'block' };">
+							<p:commandButton id="buttonSaveProfile" value="Salvar" styleClass="button" actionListener="#{profileController.save}" onclick="hideWithTimer('formUpdateProfile\\:messagesUpdateProfile');" update="messagesUpdateProfile, txtName, dataListRoles" />
+							<p:commandButton id="buttonDeleteProfile" value="Excluir" styleClass="button" actionListener="#{profileController.delete}" onclick="hideWithTimer('formUpdateProfile\\:messagesUpdateProfile');" update="messagesUpdateProfile, txtName, dataListRoles" rendered="#{not empty profileController.profileIdForm}" style="margin-left:20px;" />
+						</div>					
+					</h:form>																				
+				</div>
+			</div>		
+			
+		</ui:define>
+	</ui:composition>
+	
+</html>

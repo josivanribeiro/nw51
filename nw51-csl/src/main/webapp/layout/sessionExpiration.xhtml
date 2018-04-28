@@ -1,0 +1,21 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+	<ui:composition>
+		<!-- If idle 120 seconds, run 'wvSessionExpiration' -->
+		<p:idleMonitor timeout="120000" onidle="PF('wvSessionExpiration').show();" />
+		<p:confirmDialog id="dlgSessionExpiration"
+			message="Você está inativo por 2 minutos, sua sessão expirou. Clique em Login para continuar."
+			header="Sessão Expirada" severity="alert" widgetVar="wvSessionExpiration" closable="false">
+			<h:form id="formSessionExpiration" method="post" styleClass="default-form">
+				<div class="button-container" style="margin-left: 20px; margin-bottom: 25px;">								
+					<p:commandButton id="buttontLogout" styleClass="button" value="Login" oncomplete="PF('wvSessionExpiration').hide()" onclick="javascript:redirectTo ('login.page');" />				
+				</div>
+			</h:form>			
+		</p:confirmDialog>
+	</ui:composition>
+</html>

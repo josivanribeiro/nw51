@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:p="http://primefaces.org/ui">
+    <ui:composition>		
+		<div id="container-col-menu">
+			<div id="container-logged-user">
+				<h:form id="formLoggedUser">
+					<h:graphicImage value="/resources/images/logged_user_icon.png" /> <h:outputText value="#{loginController.loggedUser.formattedEmail} |" style="font-weight:normal;" /> <a href="#" onclick="PF('dlgChangePwd').show();">Alterar Senha</a><h:outputText value="| " style="font-weight:normal;margin-left:5px;" /><h:commandLink action="#{loginController.logout}">Logout</h:commandLink>
+				</h:form>
+			</div>			
+			<div id="menu-wrapper">
+			    <h:form id="formMenuLeft">
+				    <ul>				        			
+	        			<li style="display: #{userController.isUserInRole('papel_papel_ler') ? 'block' : 'none'};">
+					        <h:graphicImage value="/resources/images/role_icon.png" border="0" />
+					        <p:commandLink id="lnkRoles" action="#{roleController.goToRoles}" >
+					        	<h:outputText value="Papéis (#{roleController.rolesCount})" />
+		    				</p:commandLink>
+	        			</li>
+	        			<li style="display: #{userController.isUserInRole('papel_perfil_ler') ? 'block' : 'none'};">
+					        <h:graphicImage value="/resources/images/profile_icon.png" border="0" />
+					        <p:commandLink id="lnkProfiles" action="#{profileController.goToProfiles}" >
+					        	<h:outputText value="Perfis (#{profileController.profilesCount})" />
+		    				</p:commandLink>
+	        			</li>
+	        			<li style="display: #{userController.isUserInRole('papel_usuario_ler') ? 'block' : 'none'};">
+					        <h:graphicImage value="/resources/images/user_icon.png" border="0" />
+					        <p:commandLink id="lnkUsers" action="#{userController.goToUsers}" >
+					        	<h:outputText value="Usuários (#{userController.usersCount})" />
+		    				</p:commandLink>
+	        			</li>
+	        			<li style="display: #{userController.isUserInRole('papel_professor_ler') ? 'block' : 'none'};">
+					        <h:graphicImage value="/resources/images/teacher_icon.png" border="0" />
+					        <p:commandLink id="lnkTeachers" action="#{teacherController.goToTeachers}" >
+					        	<h:outputText value="Professores (#{teacherController.teachersCount})" />
+		    				</p:commandLink>
+	        			</li>
+	    		        <li style="display: #{userController.isUserInRole('papel_curso_ler') ? 'block' : 'none'};">	    		        
+	    		        	<h:graphicImage value="/resources/images/course_icon.png" border="0" />
+					        <p:commandLink id="lnkCourses" action="#{courseController.goToCourses}" >
+					        	<h:outputText value="Cursos (#{courseController.coursesCount})" />
+		    				</p:commandLink>	    		        
+	    		        </li>
+	    		        <li style="display: #{userController.isUserInRole('papel_profissao_ler') ? 'block' : 'none'};">
+	    		        	<h:graphicImage value="/resources/images/career_icon.png" border="0" />
+					        <p:commandLink id="lnkCareers" action="#{careerController.goToCareers}" >
+					        	<h:outputText value="Profissões (#{careerController.careersCount})" />
+		    				</p:commandLink>
+	    		        </li>
+	    		        <li style="display: #{userController.isUserInRole('papel_aluno_ler') ? 'block' : 'none'};">
+	    		        	<h:graphicImage value="/resources/images/student_icon.png" border="0" />
+					        <p:commandLink id="lnkStudents" action="#{studentController.goToStudents}" >
+					        	<h:outputText value="Alunos (#{studentController.studentsCount})" />
+		    				</p:commandLink>	    		        
+	    		        </li>
+	    		        <li style="display: #{userController.isUserInRole('papel_certificado_ler') ? 'block' : 'none'};">
+	    		        	<h:graphicImage value="/resources/images/certificate_icon.png" border="0" />
+					        <p:commandLink id="lnkCertificates" action="#{certificateController.goToCertificates}" >
+					        	<h:outputText value="Certificados (#{certificateController.certificatesCount})" />
+		    				</p:commandLink>
+	    		        </li>
+	    		        <li style="display: #{userController.isUserInRole('papel_pagamento_ler') ? 'block' : 'none'};">	    		        
+	    		        	<h:graphicImage value="/resources/images/payment_icon.png" border="0" />
+					        <p:commandLink id="lnkPayments" action="#{paymentController.goToPayments}" >
+					        	<h:outputText value="Pagamentos (#{paymentController.paymentsCount})" />
+		    				</p:commandLink>	    		        
+	    		        </li>
+	    		        <li style="display: #{userController.isUserInRole('papel_log_ler') ? 'block' : 'none'};">
+	    		        	<h:graphicImage value="/resources/images/log_icon.png" border="0" />
+					        <p:commandLink id="lnkLogs" action="#{logController.goToLogs}" >
+					        	<h:outputText value="Logs (#{logController.logsCount})" />
+		    				</p:commandLink>
+	    		        </li>	        
+				    </ul>
+			    </h:form>			    
+			</div>			
+		</div>
+	</ui:composition>
+</html>

@@ -1,0 +1,144 @@
+<ui:composition template="/layout/template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	<ui:define name="body">
+
+		<script type="text/javascript">
+			
+			
+			   
+		</script>
+
+		<!-- container section start -->
+		<section id="container" class="">
+
+			<!--header begin-->
+			<header class="header green-bg">
+				<ui:include src="/layout/headerMobile.xhtml" />
+				<ui:include src="/layout/header.xhtml" />
+			</header>
+			<!--header end-->
+						
+			<ui:include src="/layout/sidebar.xhtml" />
+
+			<!--main content start-->
+			<section id="main-content">
+				<section class="wrapper">
+				
+					<!--overview start-->
+					<div class="row">
+						<div class="col-lg-12">
+							<h3 class="page-header">
+								<i class="fa icon-study-plan-32"></i> Planos de estudo
+							</h3>							
+						</div>
+					</div>
+				
+					<div class="row">
+					
+					     <h:form id="formStudyPlan" role="form" styleClass="common-form">
+					     	 <h:inputHidden value="#{studyPlanController.studyPlanIdForm}" id="hiddenStudyPlanId" />
+					     	 <p:messages id="messagesStudyPlan" globalOnly="true" for="formStudyPlan:messagesStudyPlan" showDetail="true" autoUpdate="true" closable="true" styleClass="ui-messages-width padding-left padding-right" />
+                             <div class="form-group padding-left padding-right">
+                                 <label for="selectCourse">Curso</label>
+                                 <h:selectOneMenu id="selectCourse" value="#{studyPlanController.courseIdForm}" styleClass="form-control">
+								   <f:selectItems value="#{studyPlanController.courseMap}" />
+								   <f:ajax listener="#{studyPlanController.findByStudentAndCourse}" render=":formStudyPlan:resultTableStudyPlan" />
+								 </h:selectOneMenu>   								 
+                             </div>                             
+                             <fieldset>
+    						 	<legend>Dias e horários</legend>
+    						 	<div class="form-group padding-left padding-right">
+                             		<label for="formStudyPlan:cldStartClassDatetime" class="label-width">De</label>
+                             		<p:calendar locale="pt" widgetVar="startClassDatetimeVar" id="cldStartClassDatetime" value="#{studyPlanController.startClassDatetimeForm}" pattern="dd/MM/yyyy HH:mm" onclick="javascript:scrollToPosition(150);" />
+                             	</div>
+                             	<div class="form-group padding-left padding-right">
+                             		<label for="formStudyPlan:cldEndClassDatetime_input" class="label-width">Até</label>
+                             		<p:calendar locale="pt" widgetVar="endClassDatetimeVar" id="cldEndClassDatetime" value="#{studyPlanController.endClassDatetimeForm}" pattern="dd/MM/yyyy HH:mm" />
+                             	</div>
+                             	<div class="form-group padding-left padding-right">
+                             		<p:commandButton id="buttonSaveDatetime"
+                             			value="#{empty studyPlanController.studyPlanIdForm or studyPlanController.studyPlanIdForm == 0 ? 'Adicionar':'Atualizar'}"
+                             			styleClass="btn btn-add"
+                             			actionListener="#{studyPlanController.saveStudyPlan}"
+                             			onclick="javascript:scrollToTop();hideWithTimer('formStudyPlan\\:messagesStudyPlan');"
+                             			update="hiddenStudyPlanId, selectCourse, cldStartClassDatetime, cldEndClassDatetime, resultTableStudyPlan, buttonSaveDatetime" />
+                             	</div>
+    						 </fieldset>
+    						 
+    						 <div class="margin-top margin-bottom">
+								<p:dataTable id="resultTableStudyPlan" 
+									styleClass="resultTable" 
+									value="#{studyPlanController.studyPlanVOList}" 
+									var="studyPlanVO"
+									rows="10"
+									paginator="true"
+									paginatorTemplate="{CurrentPageReport} {PreviousPageLink} {NextPageLink}"
+		                         	rowsPerPageTemplate="10"
+		                         	emptyMessage="Nenhum registro foi encontrado."
+		                         	selectionMode="single" 
+		                         	selection="#{studyPlanController.selectedStudyPlanVO}" 
+		                         	rowKey="#{studyPlanVO.studyPlanId}">
+		                         	<p:ajax event="rowSelect" listener="#{studyPlanController.onRowSelect}" update=":formStudyPlan:hiddenStudyPlanId, formStudyPlan:cldStartClassDatetime, formStudyPlan:cldEndClassDatetime, formStudyPlan:buttonSaveDatetime" />
+		                         	<p:ajax event="rowUnselect" listener="#{studyPlanController.onRowUnselect}" update=":formStudyPlan:resultTableStudyPlan"/>
+								    <p:column headerText="Curso" width="30%">								    	
+							    		<div align="center">
+						        			<h:outputText value="#{studyPlanVO.courseVO.name}" />
+						        		</div>								    		
+								    </p:column>
+								    <p:column headerText="Dia" width="30%" sortBy="#{studyPlanVO.startClassDatetime}">
+								        <div align="center">
+								        	<h:outputText value="#{studyPlanVO.startClassDatetime}">
+								        		<f:convertDateTime pattern="d/M/yyyy" />
+								        	</h:outputText>							        	
+								        </div>
+								    </p:column>
+								    <p:column headerText="Horário" width="25%">			        							        
+		       							<div align="center">
+							        		<h:outputText value="#{studyPlanVO.startClassDatetime}">
+								        		<f:convertDateTime pattern="HH:mm" timeZone="America/Sao_Paulo" />
+								        	</h:outputText>
+								        	até
+							        		<h:outputText value="#{studyPlanVO.endClassDatetime}">
+								        		<f:convertDateTime pattern="HH:mm" timeZone="America/Sao_Paulo" />
+								        	</h:outputText>
+							        	</div>
+								    </p:column>
+								    <p:column headerText="" width="15%">
+		       							<div align="center">
+							        		<p:commandLink action="#{studyPlanController.delete(studyPlanVO.studyPlanId)}" update="resultTableStudyPlan" onclick="javascript:scrollToTop();hideWithTimer('formStudyPlan\\:messagesStudyPlan');">
+							        			<h:graphicImage value="/resources/img/icons/delete_icon.png" />
+							        		</p:commandLink>
+							        	</div>
+								    </p:column>
+								</p:dataTable>
+												
+							</div>
+                             <div class="form-group padding-left padding-right">
+                             	<p:commandButton id="buttonSaveStudyPlan"
+                             		value="Salvar"
+                             		styleClass="btn" 
+                             		actionListener="#{studyPlanController.save}"
+                             		onclick="javascript:scrollToTop();hideWithTimer('formStudyPlan\\:messagesStudyPlan');" 
+                             	    update="messagesStudyPlan, hiddenStudyPlanId" />
+                             </div>
+                         </h:form>
+						
+					</div>
+					<!--/.row-->
+					
+					
+                  <div class="widget-foot">
+                    <!-- Footer goes here -->
+                  </div>
+                  
+          	  </section>
+      	  	</section>
+      		<!--main content end-->
+  		</section>
+  		<!-- container section end -->
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:p="http://primefaces.org/ui">
+	  	    
+	<ui:composition template="/layout/template.xhtml">
+		<ui:define name="body">
+			
+			<script type="text/javascript">
+											
+				$(document).ready(function() {
+										
+			    });
+			
+			</script>
+			
+			<div id="container-content">
+				<!-- menuLeft -->
+				<ui:include src="/layout/menuLeft.xhtml" />
+				<div id="container-col-right">
+					<h:form id="formUpdateLog" styleClass="default-form">
+						<f:metadata>
+    						<f:viewParam name="id" value="#{logController.logIdForm}"/>
+    						<f:event type="preRenderView" listener="#{logController.loadById}" />
+						</f:metadata>
+						<p:messages id="messagesUpdateLog" showDetail="true" autoUpdate="true" closable="true" style="width: 406px;" />
+						<div class="field-container-default">
+							<h:outputLabel id="labelFullName" for="txtFullName" value="Nome Completo (Aluno)" styleClass="label-field" /><br></br>
+							<h:inputText id="txtFullName" value="#{logController.studentNameForm}" readonly="true" />
+						</div>
+						<div class="field-container-default">
+							<h:outputLabel id="labelOperation" for="txtOperation" value="Operação" styleClass="label-field" /><br></br>
+							<h:inputText id="txtOperation" value="#{logController.operationForm}" readonly="true" />
+						</div>
+						<div class="field-container-default">
+							<h:outputLabel id="labelStatus" for="txtStatus" value="Status" styleClass="label-field" /><br></br>
+							<h:inputText id="txtStatus" value="#{logController.statusForm == 1 ? 'Sucesso':'Erro'}" readonly="true" />
+						</div>
+						<div class="field-container-default">
+							<h:outputLabel id="labelMessage" for="txtMessage" value="Mensagem" styleClass="label-field" /><br></br>
+							<h:inputText id="txtMessage" value="#{logController.messageForm}" readonly="true" />
+						</div>						
+						<div class="field-container-default" style="height: auto;">
+							<h:outputLabel id="labelInput" for="txtInput" value="Input" styleClass="label-field" /><br></br>
+							<p:inputTextarea id="txtInput" value="#{logController.inputForm}" rows="7" cols="50" style="width: 650px;" readonly="true" />
+						</div>						
+						<div class="field-container-default" style="height: auto;">
+							<h:outputLabel id="labelOutput" for="txtOutput" value="Output" styleClass="label-field" /><br></br>
+							<p:inputTextarea id="txtOutput" value="#{logController.outputForm}" rows="7" cols="50" style="width: 650px;" readonly="true" />
+						</div>						
+						<div class="field-container-default" style="height: auto;">
+							<h:outputLabel id="labelError" for="txtError" value="Erro" styleClass="label-field" /><br></br>
+							<p:inputTextarea id="txtError" value="#{logController.errorForm}" rows="7" cols="50" style="width: 650px;" readonly="true" />
+						</div>						
+						<div class="field-container-default">
+							<h:outputLabel id="labelLogDate" for="txtLogDate" value="Data de Log" styleClass="label-field" /><br></br>
+							<h:inputText id="txtLogDate" value="#{logController.logTimeForm}" readonly="true">
+								<f:convertDateTime pattern="d/M/yyyy HH:mm:ss" />
+							</h:inputText>
+						</div>												
+					</h:form>																				
+				</div>
+			</div>
+			
+		</ui:define>
+	</ui:composition>
+	
+</html>

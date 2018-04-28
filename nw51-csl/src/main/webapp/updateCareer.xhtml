@@ -1,0 +1,125 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:p="http://primefaces.org/ui">
+	  	    
+	<ui:composition template="/layout/template.xhtml">
+		<ui:define name="body">
+			
+			<script type="text/javascript">
+											
+				$(document).ready(function() {
+					
+				    $("#formUpdateCareer\\:buttonSaveCareer").click(function() {
+				    	$('body').ScrollTo();
+				    });
+				   
+				    
+				    $("#formUpdateCareer\\:buttonDeleteCareer").click(function() {
+				    	$('body').ScrollTo();
+				    });
+					
+			    });
+			
+			</script>
+			
+			<div id="container-content">
+				<!-- menuLeft -->
+				<ui:include src="/layout/menuLeft.xhtml" />
+				<div id="container-col-right">					
+					<h:form id="formUpdateCareer" styleClass="default-form">												
+						<f:metadata>
+    						<f:viewParam name="id" value="#{careerController.careerIdForm}"/>
+    						<f:event type="preRenderView" listener="#{careerController.loadById}" />
+						</f:metadata>						
+						<p:messages id="messagesUpdateCareer" globalOnly="true" for="formUpdateCareer:messagesUpdateCareer" showDetail="true" autoUpdate="true" closable="true" style="width: 640px;" />
+						<div class="field-container-default">
+							<h:outputLabel id="labelName" for="txtName" value="Nome" styleClass="label-field" /><br></br>
+							<h:inputText id="txtName" value="#{careerController.nameForm}" maxlength="200" readonly="#{careerController.readOnly}" />
+						</div>
+						<div class="field-container-default">
+							<h:outputLabel id="labelCareerType" for="selectCareerType" value="Tipo da Profissão" styleClass="label-field" /><br></br>
+							<h:selectOneMenu id="selectCareerType" value="#{careerController.careerTypeForm}" disabled="#{careerController.readOnly}">
+   								<f:selectItems value="#{careerController.careerTypeMap}" />
+   							</h:selectOneMenu>
+						</div>
+						<div class="field-container-default" style="height: auto;">
+							<h:outputLabel id="labelDescription" for="txtDescription" value="Descrição" styleClass="label-field" /><br></br>
+							<p:inputTextarea id="txtDescription" value="#{careerController.descriptionForm}" rows="4" cols="50" style="width: 630px;" readonly="#{careerController.readOnly}" />
+						</div>
+						<h:outputLabel id="labelCourse" value="Cursos" styleClass="label-field" />
+						<div id="courses-container" class="field-container-default" style="height: auto;">
+							<div class="field-container-default table-border" style="height: auto; width:598px;" id="container-search-result">
+								<div id="container-button-add" style="margin-top: 0px; margin-bottom: 27px; margin-right: 34px;">
+									<p:commandButton value="Adicionar Curso" id="buttonAddCourse" styleClass="button" oncomplete="PF('wvAddCourse').show()" style="width: 114px;" rendered="#{not careerController.readOnly}" />
+								</div>
+								<p:dialog header="Adicionar Curso" id="dlgAddCourse" widgetVar="wvAddCourse" modal="true" resizable="false" width="464">
+									<div class="field-container-default">
+										<h:outputLabel id="labelSelectCourse" for="selectCourse" value="Curso" styleClass="label-field" /><br></br>
+										<h:selectOneMenu id="selectCourse" value="#{careerController.courseIdForm}">
+			   								<f:selectItems value="#{careerController.courseMap}" />
+			   							</h:selectOneMenu>
+									</div>
+									<div class="button-container" style="margin-bottom: 5px;">
+										<p:commandButton id="buttonSaveCourse" value="Salvar" styleClass="button" actionListener="#{careerController.saveCourseListener}" update="resultTableCourses, selectCourse" oncomplete="PF('wvAddCourse').hide();" />
+									</div>									
+								</p:dialog>
+								<p:dataTable id="resultTableCourses" styleClass="resultTable" value="#{careerController.careerCourseVOList}" var="careerCourseVO" 
+									rows="5"
+									paginator="true" 
+									paginatorTemplate="{CurrentPageReport} {PreviousPageLink} {NextPageLink}"
+		                         	rowsPerPageTemplate="5"
+		                         	emptyMessage="Nenhum registro foi encontrado.">
+								    <p:column headerText="Id" sortBy="#{careerCourseVO.courseVO.courseId}">
+								        <div align="center">
+								        	<h:outputText value="#{careerCourseVO.courseVO.courseId}" />
+								        </div>
+								    </p:column>
+								    <p:column headerText="Nome" sortBy="#{careerCourseVO.courseVO.name}">
+								        <div align="center">
+								        	<h:outputText value="#{careerCourseVO.courseVO.name}" />
+								        </div>
+								    </p:column>
+								    <p:column headerText="Sequência" sortBy="#{careerCourseVO.sequenceNumber}">
+								        <div align="center">
+								        	<h:outputText value="#{careerCourseVO.sequenceNumber}" />
+								        </div>
+								    </p:column>
+								    <p:column headerText="Tipo do Curso" sortBy="#{careerCourseVO.courseVO.courseType}">
+								        <div align="center">
+		       								<h:outputText value="#{careerCourseVO.courseVO.courseTypeName}" />    								
+		       							</div>
+								    </p:column>
+								    <p:column headerText="Professor" sortBy="#{careerCourseVO.courseVO.teacherVO.fullName}">
+								        <div align="center">
+		       								<h:outputText value="#{careerCourseVO.courseVO.teacherVO.fullName}" />
+		       							</div>
+								    </p:column>
+								    <p:column style="width:16%">		        
+							        	<div style="float: right;">							        		
+							        		<p:commandButton value="Excluir Curso" id="buttonDeleteCourse" styleClass="button" action="#{careerController.deleteCourse(careerCourseVO.courseVO.courseId)}" rendered="#{not empty careerCourseVO.courseVO.courseId and not careerController.readOnly}" update="resultTableCourses" style="width: 106px;" />
+							        	</div>							        								        
+							        </p:column>								    
+								</p:dataTable>
+							</div>
+						</div>
+						<div class="field-container-default-checkbox">
+							<div style="float: left; width: 100%; margin-bottom: 20px;">
+								<h:selectBooleanCheckbox id="chktStatus" value="#{careerController.statusForm}" disabled="#{careerController.readOnly}" />
+								<h:outputLabel id="lblStatus" for="chktStatus" value="Ativo" styleClass="label-field" />
+							</div>
+						</div>
+						<div class="button-container" style="display: #{careerController.readOnly ? 'none':'block' };">
+							<p:commandButton id="buttonSaveCareer" value="Salvar" styleClass="button" actionListener="#{careerController.save}" onclick="hideWithTimer('formUpdateCareer\\:messagesUpdateCareer');" update="messagesUpdateCareer, txtName, selectCareerType, txtDescription, resultTableCourses, chktStatus" />
+							<p:commandButton id="buttonDeleteCareer" value="Excluir" styleClass="button" actionListener="#{careerController.delete}" onclick="hideWithTimer('formUpdateCareer\\:messagesUpdateCareer');" update="messagesUpdateCareer, txtName, selectCareerType, txtDescription, resultTableCourses, chktStatus" rendered="#{not empty careerController.careerIdForm}" style="margin-left:20px;" />
+						</div>
+					</h:form>							
+				</div>
+			</div>		
+			
+		</ui:define>
+	</ui:composition>
+	
+</html>

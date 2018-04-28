@@ -1,0 +1,120 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:p="http://primefaces.org/ui">
+	  	    
+	<ui:composition template="/layout/template.xhtml">
+		<ui:define name="body">
+			
+			<script type="text/javascript">
+				
+				$(document).ready(function() {
+				   
+				   $("table[role='grid']").delegate("tr", "click", function(e) {
+					   var id = $(this).find('td:first').text().trim();
+						if (parseInt (id) > 0) {
+							redirectTo ('updateLog.page?id=' + id);
+						}
+				   });
+				   
+				   $("#formSearch\\:txtStartDateFilter").focus(function() {
+					   $('.ui-paginator-current').css ('vertical-align','-5px');					   
+				   });
+				   
+				   $("#formSearch\\:txtEndDateFilter").focus(function() {
+					   $('.ui-paginator-current').css ('vertical-align','-5px');					   
+				   });
+				   
+			   });			   				
+			
+			</script>
+			
+			<div id="container-content">
+				<!-- menuLeft -->
+				<ui:include src="/layout/menuLeft.xhtml" />
+				<f:metadata>
+					<f:event type="preRenderView" listener="#{logController.findByFilter}" />
+				</f:metadata>
+				<div id="container-col-right">
+					<p:message id="messagesLogs" globalOnly="true" for="messagesLogs" showDetail="true" autoUpdate="true" closable="true" style="width: 100%; margin-top: 20px;" />
+					<h:form id="formSearch">
+						<div id="container-search-filter">						
+							<div class="column-container-filter">
+								<div class="field-container-filter">
+									<h:outputLabel id="labelStartDateFilter" for="txtStartDateFilter" value="Início Data de Log" styleClass="label-field" /><br></br>
+									<h:inputText id="txtStartDateFilter" value="#{logController.startLogDateFilter}" maxlength="10" />
+								</div>								
+								<div class="field-container-filter">
+									<h:outputLabel id="labelCpfFilter" for="txtCpfFilter" value="CPF (Aluno)" styleClass="label-field" /><br></br>
+									<h:inputText id="txtCpfFilter" value="#{logController.cpfFilter}" maxlength="14" />
+								</div>
+							</div>
+							<div class="column-container-filter">
+								<div class="field-container-filter">
+									<h:outputLabel id="labelEndDateFilter" for="txtEndDateFilter" value="Fim Data de Log" styleClass="label-field" /><br></br>
+									<h:inputText id="txtEndDateFilter" value="#{logController.endLogDateFilter}" maxlength="10" />
+								</div>
+								<div class="field-container-filter">
+									<h:outputLabel id="labelStatus" for="selectStatus" value="Status" styleClass="label-field" /><br></br>
+									<h:selectOneMenu id="selectStatus" value="#{logController.statusFilter}">
+		   								<f:selectItems value="#{logController.statusMap}" />
+		   							</h:selectOneMenu>
+								</div>			
+							</div>
+							<div class="column-container-filter">
+								<div class="button-container-filter">
+									<p:commandButton id="buttonSearch" value="Pesquisar" styleClass="button" style="float:left;" actionListener="#{logController.findByFilterListener}" onclick="hideWithTimer('messagesLogs');" update=":resultTableLogs, messagesLogs" />								
+								</div>
+							</div>
+						</div>
+					</h:form>
+					<div id="container-search-result">
+						<p:dataTable id="resultTableLogs" styleClass="resultTable" value="#{logController.logVOList}" var="logVO" 
+							rows="5" 
+							paginator="true" 
+							paginatorTemplate="{CurrentPageReport} {PreviousPageLink} {NextPageLink}"
+                         	rowsPerPageTemplate="5"
+                         	emptyMessage="Nenhum registro foi encontrado.">
+						    <p:column headerText="Id" sortBy="#{logVO.logId}">
+						        <div align="center">
+						        	<h:outputText value="#{logVO.logId}" />        	
+						        </div>
+						    </p:column>
+						    <p:column headerText="Operação" sortBy="#{logVO.operation}">
+						        <div align="center">
+       								<h:outputText value="#{logVO.operation}" />
+       							</div>
+						    </p:column>						    
+						    <p:column headerText="Aluno" sortBy="#{logVO.studentVO.fullName}">
+						        <div align="center">
+       								<h:outputText value="#{logVO.studentVO.fullName}" />
+       							</div>
+						    </p:column>
+						    <p:column headerText="Mensagem" sortBy="#{logVO.message}">
+						        <div align="center">
+       								<h:outputText value="#{logVO.shortMessage}" />
+       							</div>
+						    </p:column>
+						    <p:column headerText="Data de Log" sortBy="#{logVO.logTime}">
+       							<div align="center">
+       								<h:outputText value="#{logVO.logTime}">
+       									<f:convertDateTime pattern="d/M/yyyy HH:mm:ss" />
+       								</h:outputText>
+       							</div>
+						    </p:column>
+						    <p:column headerText="Status" sortBy="#{logVO.status}">
+       							<div align="center">
+       								<h:outputText value="#{logVO.status == 1 ? 'Sucesso':'Erro' }" />       									
+       							</div>
+						    </p:column>
+						</p:dataTable>
+					</div>																
+				</div>
+			</div>		
+			
+		</ui:define>
+	</ui:composition>
+	
+</html>

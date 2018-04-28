@@ -1,0 +1,110 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:p="http://primefaces.org/ui">
+	  	    
+	<ui:composition template="/layout/template.xhtml">
+		<ui:define name="body">
+			
+			<script type="text/javascript">
+				
+				$(document).ready(function() {
+				   
+				   $("table[role='grid']").delegate("tr", "click", function(e) {
+					   var id = $(this).find('td:first').text().trim();
+						if (parseInt (id) > 0) {
+							redirectTo ('updateCertificate.page?id=' + id);
+						}
+				   });
+				   
+				   $("#formSearch\\:txtStartDateFilter").focus(function() {
+					   $('.ui-paginator-current').css ('vertical-align','-5px');					   
+				   });
+				   
+				   $("#formSearch\\:txtEndDateFilter").focus(function() {
+					   $('.ui-paginator-current').css ('vertical-align','-5px');					   
+				   });
+				   
+			   });			   				
+			
+			</script>
+			
+			<div id="container-content">
+				<!-- menuLeft -->
+				<ui:include src="/layout/menuLeft.xhtml" />
+				<f:metadata>
+					<f:event type="preRenderView" listener="#{certificateController.findByFilter}" />
+				</f:metadata>
+				<div id="container-col-right">
+					<p:message id="messagesCertificates" globalOnly="true" for="messagesCertificates" showDetail="true" autoUpdate="true" closable="true" style="width: 100%; margin-top: 20px;" />					
+					<h:form id="formSearch">
+						<div id="container-search-filter">						
+							<div class="column-container-filter">
+								<div class="field-container-filter">
+									<h:outputLabel id="labelStartDateFilter" for="txtStartDateFilter" value="Início Data de Criação" styleClass="label-field" /><br></br>
+									<h:inputText id="txtStartDateFilter" value="#{certificateController.startCreationDateFilter}" maxlength="10" />
+								</div>								
+								<div class="field-container-filter">
+									<h:outputLabel id="labelCpfFilter" for="txtCpfFilter" value="CPF (Aluno)" styleClass="label-field" /><br></br>
+									<h:inputText id="txtCpfFilter" value="#{certificateController.cpfFilter}" maxlength="14" />
+								</div>
+							</div>
+							<div class="column-container-filter">
+								<div class="field-container-filter">
+									<h:outputLabel id="labelEndDateFilter" for="txtEndDateFilter" value="Fim Data de Criação" styleClass="label-field" /><br></br>
+									<h:inputText id="txtEndDateFilter" value="#{certificateController.endCreationDateFilter}" maxlength="10" />
+								</div>
+								<div class="field-container-filter">
+									<h:outputLabel id="labelCourse" for="selectCourse" value="Curso" styleClass="label-field" /><br></br>
+									<h:selectOneMenu id="selectCourse" value="#{certificateController.courseIdFilter}">
+		   								<f:selectItems value="#{certificateController.courseMap}" />
+		   							</h:selectOneMenu>
+								</div>								
+							</div>
+							<div class="column-container-filter">								
+								<div class="button-container-filter">
+									<p:commandButton id="buttonSearch" value="Pesquisar" styleClass="button" style="float:left;" actionListener="#{certificateController.findByFilterListener}" onclick="hideWithTimer('messagesCertificates');" update=":resultTableCertificates, messagesCertificates" />
+								</div>
+							</div>
+						</div>
+					</h:form>
+					<div id="container-search-result">
+						<p:dataTable id="resultTableCertificates" styleClass="resultTable" value="#{certificateController.certificateVOList}" var="certificateVO" 
+							rows="5" 
+							paginator="true" 
+							paginatorTemplate="{CurrentPageReport} {PreviousPageLink} {NextPageLink}"
+                         	rowsPerPageTemplate="5"
+                         	emptyMessage="Nenhum registro foi encontrado.">
+						    <p:column headerText="Id" sortBy="#{certificateVO.certificateId}">
+						        <div align="center">
+						        	<h:outputText value="#{certificateVO.certificateId}" />        	
+						        </div>
+						    </p:column>
+						    <p:column headerText="Curso" sortBy="#{certificateVO.studentCourseVO.courseVO.name}">
+						        <div style="float: left;">
+						        	<h:outputText value="#{certificateVO.studentCourseVO.courseVO.name}" />
+						        </div>
+						    </p:column>
+						    <p:column headerText="Aluno" sortBy="#{certificateVO.studentCourseVO.studentVO.fullName}">
+						        <div align="center">
+       								<h:outputText value="#{certificateVO.studentCourseVO.studentVO.fullName}" />
+       							</div>
+						    </p:column>
+						    <p:column headerText="Data de Criação" sortBy="#{certificateVO.creationDate}">
+       							<div align="center">
+       								<h:outputText value="#{certificateVO.creationDate}">
+       									<f:convertDateTime pattern="d/M/yyyy HH:mm" />
+       								</h:outputText>       								
+       							</div>
+						    </p:column>
+						</p:dataTable>
+					</div>																
+				</div>
+			</div>		
+			
+		</ui:define>
+	</ui:composition>
+	
+</html>

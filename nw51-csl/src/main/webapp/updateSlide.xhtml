@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:p="http://primefaces.org/ui"
+	  xmlns:pe="http://primefaces.org/ui/extensions">
+	  	    
+	<ui:composition template="/layout/template.xhtml">
+		<ui:define name="body">
+			
+			<script type="text/javascript">
+											
+				$(document).ready(function() {
+					
+					$("#formUpdateSlide\\:buttonSaveSlide").click(function() {
+						$('body').ScrollTo();
+				    });
+					
+					$("#formUpdateSlide\\:buttonDeleteSlide").click(function() {
+						$('body').ScrollTo();
+				    });				
+					
+			    });
+			
+			</script>
+			
+			<div id="container-content">
+				<!-- menuLeft -->
+				<ui:include src="/layout/menuLeft.xhtml" />
+				<div id="container-col-right">					
+					<h:form id="formUpdateSlide" enctype="multipart/form-data">
+						<h:inputHidden value="#{slideController.slideIdForm}" id="hiddenSlideId" />
+						<h:inputHidden value="#{slideController.classIdForm}" id="hiddenClassId" />
+						<f:metadata>
+    						<f:viewParam name="id" value="#{slideController.slideIdForm}"/>
+    						<f:viewParam name="classId" value="#{slideController.classIdForm}"/>
+    						<f:event type="preRenderView" listener="#{slideController.loadById}" />
+						</f:metadata>
+						<pe:tooltip global="true" fixed="true" myPosition="left center" atPosition="right center"/>
+						<p:messages id="messagesUpdateSlide" globalOnly="true" for="formUpdateSlide:messagesUpdateSlide" showDetail="true" autoUpdate="true" closable="true" style="width: 97%;" />
+						<div class="field-container-default">
+							<h:outputLabel id="labelName" for="txtName" value="Nome" styleClass="label-field" /><br></br>
+							<h:inputText id="txtName" value="#{slideController.nameForm}" maxlength="200" style="width: 96%;" readonly="#{courseController.readOnly}" title="Título do Slide." />
+						</div>
+						<div id="editor-content-container" class="field-container-default" style="height: 420px;" title="Conteúdo HTML do Slide.">
+							<h:outputLabel id="labelContent" for="txtContent" value="Conteúdo" styleClass="label-field" /><br></br>
+							<p:editor id="txtContent" widgetVar="editorWidget" value="#{slideController.contentForm}" width="636" height="400" disabled="#{courseController.readOnly}" />
+						</div>
+						<div class="field-container-default-checkbox" style="margin-bottom: 20px;">
+							<div style="float: left;">
+								<h:selectBooleanCheckbox id="chktStatus" value="#{slideController.statusForm}" disabled="#{courseController.readOnly}" title="Status do Slide, pode ser Ativo ou Inativo." />
+								<h:outputLabel id="lblStatus" for="chktStatus" value="Ativo" styleClass="label-field" />								
+							</div>
+						</div>
+						<div class="button-container">
+							<div class="button-container-delete" style="display: #{not courseController.readOnly and slideController.slideIdForm > 0 ? 'block': 'none'};">
+								<p:commandButton id="buttonDeleteSlide" value="Excluir" styleClass="button" actionListener="#{slideController.delete}" onclick="hideWithTimer('formUpdateSlide\\:messagesUpdateSlide');" update="messagesUpdateSlide, hiddenSlideId, hiddenClassId, txtName, txtContent, chktStatus" style="margin-left:20px;" />
+							</div>
+							<p:commandButton id="buttonBackClass" value="Voltar" styleClass="button" action="#{slideController.backToClass}" style="margin-right: 20px;" />
+							<p:commandButton id="buttonSaveSlide" value="Salvar" styleClass="button" actionListener="#{slideController.save}" onclick="hideWithTimer('formUpdateSlide\\:messagesUpdateSlide');" update="messagesUpdateSlide, hiddenSlideId, hiddenClassId, txtName, txtContent, chktStatus" rendered="#{not courseController.readOnly}" />
+						</div>
+					</h:form>
+				</div>
+			</div>		
+			
+		</ui:define>
+	</ui:composition>
+	
+</html>

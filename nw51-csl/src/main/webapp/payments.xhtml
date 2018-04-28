@@ -1,0 +1,118 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:p="http://primefaces.org/ui">
+	  	    
+	<ui:composition template="/layout/template.xhtml">
+		<ui:define name="body">
+			
+			<script type="text/javascript">
+				
+				$(document).ready(function() {
+				  
+				   $("table[role='grid']").delegate("tr", "click", function(e) {
+					   var id = $(this).find('td:first').text().trim();
+						if (parseInt (id) > 0) {
+							redirectTo ('updatePayment.page?id=' + id);
+						}
+				   });
+				   
+				   $("#formSearch\\:txtStartDateFilter").focus(function() {
+					   $('.ui-paginator-current').css ('vertical-align','-5px');					   
+				   });
+				   
+				   $("#formSearch\\:txtEndDateFilter").focus(function() {
+					   $('.ui-paginator-current').css ('vertical-align','-5px');					   
+				   });
+				   
+			   });			   				
+			
+			</script>
+			
+			<div id="container-content">
+				<!-- menuLeft -->
+				<ui:include src="/layout/menuLeft.xhtml" />
+				<f:metadata>
+					<f:event type="preRenderView" listener="#{paymentController.findByFilter}" />
+				</f:metadata>
+				<div id="container-col-right">
+					<p:message id="messagesPayments" globalOnly="true" for="messagesPayments" showDetail="true" autoUpdate="true" closable="true" style="width: 100%; margin-top: 20px;" />
+					<h:form id="formSearch">
+						<div id="container-search-filter">						
+							<div class="column-container-filter">
+								<div class="field-container-filter">
+									<h:outputLabel id="labelStartDateFilter" for="txtStartDateFilter" value="Início Data de Pagamento" styleClass="label-field" /><br></br>
+									<h:inputText id="txtStartDateFilter" value="#{paymentController.startPaymentDateFilter}" maxlength="10" />
+								</div>
+								<div class="field-container-filter">
+									<h:outputLabel id="labelFullNameFilter" for="txtFullNameFilter" value="Nome Completo" styleClass="label-field" /><br></br>
+									<h:inputText id="txtFullNameFilter" value="#{paymentController.fullNameFilter}" maxlength="150" />
+								</div>								
+							</div>
+							<div class="column-container-filter">
+								<div class="field-container-filter">
+									<h:outputLabel id="labelEndDateFilter" for="txtEndDateFilter" value="Fim Data de Pagamento" styleClass="label-field" /><br></br>
+									<h:inputText id="txtEndDateFilter" value="#{paymentController.endPaymentDateFilter}" maxlength="10" />
+								</div>
+								<div class="field-container-filter">
+									<h:outputLabel id="labelCpfFilter" for="txtCpfFilter" value="CPF" styleClass="label-field" /><br></br>
+									<h:inputText id="txtCpfFilter" value="#{paymentController.cpfFilter}" maxlength="14" />
+								</div>								
+							</div>
+							<div class="column-container-filter">							
+								<div class="button-container-filter">
+									<p:commandButton id="buttonSearch" value="Pesquisar" styleClass="button" style="float:left;" actionListener="#{paymentController.findByFilterListener}" onclick="hideWithTimer('messagesPayments');" update=":resultTablePayments, messagesPayments" />								
+								</div>
+							</div>
+						</div>
+					</h:form>
+					<div id="container-search-result">
+						<p:dataTable id="resultTablePayments" styleClass="resultTable" value="#{paymentController.paymentVOList}" var="paymentVO" 
+							rows="5" 
+							paginator="true" 
+							paginatorTemplate="{CurrentPageReport} {PreviousPageLink} {NextPageLink}"
+                         	rowsPerPageTemplate="5"
+                         	emptyMessage="Nenhum registro foi encontrado.">
+						    <p:column headerText="Id" sortBy="#{paymentVO.paymentId}">
+						        <div align="center">
+						        	<h:outputText value="#{paymentVO.paymentId}" />        	
+						        </div>
+						    </p:column>
+						    <p:column headerText="Valor" sortBy="#{paymentVO.amount}">
+						        <div style="float: left;">
+						        	<h:outputText value="#{paymentVO.amount}" />
+						        </div>
+						    </p:column>
+						    <p:column headerText="Nome Completo" sortBy="#{paymentVO.studentVO.fullName}">
+						        <div align="center">
+       								<h:outputText value="#{paymentVO.studentVO.fullName}" />       								
+       							</div>
+						    </p:column>
+						    <p:column headerText="CPF" sortBy="#{paymentVO.studentVO.cpf}">
+       							<div align="center">
+       								<h:outputText value="#{paymentVO.studentVO.cpf}" />		
+       							</div>
+						    </p:column>
+						    <p:column headerText="Data de Pagamento" sortBy="#{paymentVO.paymentDate}">
+       							<div align="center">
+       								<h:outputText value="#{paymentVO.paymentDate}">
+       									<f:convertDateTime pattern="d/M/yyyy HH:mm" />
+       								</h:outputText>       								
+       							</div>
+						    </p:column>
+						    <p:column headerText="Pagamento Ref. Mês/Ano" sortBy="#{paymentVO.paymentForMonthYear}">
+       							<div align="center">
+       								<h:outputText value="#{paymentVO.paymentForMonthYear}" />       								
+       							</div>
+						    </p:column>
+						</p:dataTable>
+					</div>																
+				</div>
+			</div>		
+			
+		</ui:define>
+	</ui:composition>
+	
+</html>

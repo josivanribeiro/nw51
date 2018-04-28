@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:p="http://primefaces.org/ui">
+	  	    
+	<ui:composition template="/layout/template.xhtml">
+		<ui:define name="body">
+			
+			<script type="text/javascript">
+				
+				$(document).ready(function() {
+				  				  
+					$("table[role='grid']").delegate("tr", "click", function(e) {
+						var id = $(this).find('td:first').text().trim();
+						if (parseInt (id) > 0) {
+							redirectTo ('updateProfile.page?id=' + id);
+						}
+					});
+				   
+			    });
+			
+			</script>
+			
+			<div id="container-content">
+				<!-- menuLeft -->
+				<ui:include src="/layout/menuLeft.xhtml" />
+				<f:metadata>
+					<f:event type="preRenderView" listener="#{profileController.findAll}" />
+					<f:event type="preRenderView" listener="#{profileController.findAllRole}" />
+				</f:metadata>
+				<div id="container-col-right">					
+					<div id="container-button-add">						
+						<p:commandButton value="Adicionar" id="buttonAddProfile" styleClass="button" action="#{profileController.goToAddProfile}" rendered="#{not profileController.readOnly}" />
+					</div>
+					<div id="container-search-result">						
+						<p:dataTable id="resultTableProfiles" styleClass="resultTable" value="#{profileController.profileVOList}" var="profileVO" 
+							rows="10" 
+							paginator="true" 
+							paginatorTemplate="{CurrentPageReport} {PreviousPageLink} {NextPageLink}"
+                         	rowsPerPageTemplate="10"
+                         	emptyMessage="Nenhum registro foi encontrado.">
+						    <p:column headerText="Id" sortBy="#{profileVO.profileId}">
+						        <div align="center">
+						        	<h:outputText value="#{profileVO.profileId}" />							        	
+						        </div>
+						    </p:column>
+						    <p:column headerText="Nome" sortBy="#{profileVO.name}">
+      							<div align="center">
+       								<h:outputLabel value="#{profileVO.name}" />
+       							</div>
+						    </p:column>
+						</p:dataTable>
+					</div>										
+				</div>
+			</div>		
+			
+		</ui:define>
+	</ui:composition>
+	
+</html>

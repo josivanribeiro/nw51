@@ -1,0 +1,131 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:ui="http://java.sun.com/jsf/facelets">
+	<ui:composition>
+		
+		<div id="header-mobile">
+			<div class="toggle-nav">
+				<div class="icon-reorder tooltips" data-original-title="Toggle Navigation" data-placement="bottom">
+					<i class="icon_menu"></i>
+				</div>
+			</div>
+			
+			<!--logo start-->
+			<a href="profile.page" class="logo">
+				<h:graphicImage value="/resources/img/logo_nw51_white.png" />
+			</a>
+			<!--logo end-->
+			
+			<div class="top-nav user-login-row">
+				<ul class="nav pull-right top-menu">
+					<!-- user login dropdown start-->
+					<li class="dropdown">
+						<a data-toggle="dropdown" class="dropdown-toggle" href="#">
+							<span class="profile-ava">
+								<img alt="" src="resources/img/avatar1_small.jpg"/>
+						    </span> <b class="caret"></b>
+					    </a>
+						<ul class="dropdown-menu extended">
+							<li>
+								<a href="dashboard.page">
+									<i class="icon-dashboard icon-dropdown-v-align"></i> Dashboard
+								</a>
+							</li>
+							<li>
+								<a href="#">
+									<i class="icon-profile icon-dropdown-v-align"></i> Perfil
+								</a>
+							</li>															
+							<li>
+								<a href="#">
+									<i class="icon-help icon-dropdown-v-align"></i> Ajuda
+								</a>
+							</li>
+							<li>
+								<h:form id="formMobileLoggedStudent">
+									<h:commandLink action="#{loginController.logout}"><i class="icon-logout icon-dropdown-v-align" style="margin-right: 5px;"></i>Logout</h:commandLink>
+								</h:form>
+							</li>
+						</ul>
+					</li>
+					<!-- user login dropdown end -->				
+				</ul>				
+				
+			</div>
+			
+		</div>
+		
+		<div id="subheader-mobile">
+			
+			<div class="nav search-row" id="top_menu">
+				<!--  search form start -->
+				<form class="navbar-form">
+					<input class="form-control" type="text" placeholder="Cursos ou profissões..." />
+					<a href="#">
+						<h:graphicImage value="/resources/img/icons/search_icon.png" styleClass="search-icon" />
+					</a>
+				</form>
+				<!--  search form end -->
+			</div>
+			
+			<!-- point dropdown start-->
+			<ul class="nav pull-right top-menu">
+				<!-- point start -->
+				<li id="point_bar" class="dropdown">
+					<a data-toggle="dropdown" class="dropdown-toggle" href="#"> 
+						<span class="icon-point"></span> 
+						<span class="badge bg-important">60</span>
+					</a>
+					<ul class="dropdown-menu extended tasks-bar">
+						<div class="notify-arrow notify-arrow-blue"></div>
+						<li>
+							<p class="blue">Você tem 10 novos pontos</p>
+						</li>
+						<li>
+							<a href="#">
+								<div class="task-info">
+									<div class="desc">Design PSD</div>
+									<div class="percent">90%</div>
+								</div>
+								<div class="progress progress-striped">
+									<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100" style="width: 90%">
+										<span class="sr-only">90% Complete (success)</span>
+									</div>
+								</div>
+							</a>
+						</li>
+						<li class="external">
+							<a href="#">Ver todos os pontos</a>
+						</li>
+					</ul>
+				</li>
+				<!-- point end -->
+				<!-- notification start-->
+				<li id="notification_bar" class="dropdown">
+					<a data-toggle="dropdown" class="dropdown-toggle" href="#"> 
+						<i class="icon-bell-l"></i> <span class="badge bg-important">7</span>
+					</a>
+					<ul class="dropdown-menu extended notification">
+						<div class="notify-arrow notify-arrow-blue"></div>
+						<li>
+							<p class="blue">Você tem 1 nova notificação</p>
+						</li>
+						<li>
+							<a href="#">
+								<span class="label label-primary"><i class="icon_profile"></i></span> Friend Request 
+								<span class="small italic pull-right">5 mins</span>
+						</a></li>
+						<li>
+							<a href="#">Ver todas as notificações</a>
+						</li>
+					</ul>
+				</li>
+				<!-- notification end-->
+			</ul>
+			<!-- notification dropdown end-->			
+		</div>
+
+	</ui:composition>
+</html>

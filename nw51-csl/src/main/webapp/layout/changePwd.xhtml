@@ -1,0 +1,27 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:p="http://primefaces.org/ui"
+	  xmlns:pe="http://primefaces.org/ui/extensions">
+	<ui:composition>
+		<p:dialog header="Alterar Senha" widgetVar="dlgChangePwd" modal="true" resizable="false" width="464">
+			<h:form id="formChangeUserPwd" method="post" styleClass="default-form">
+				<p:messages id="messagesChangeUserPwd" globalOnly="true" for="formChangeUserPwd:messagesChangeUserPwd" showDetail="true" autoUpdate="true" closable="true" style="width: 406px;" />
+				<pe:tooltip global="true" fixed="true" myPosition="left center" atPosition="right center"/>
+				<div class="field-container-default">
+					<h:outputLabel id="labelPwd" for="txtPwd" value="Nova Senha" styleClass="label-field" /><br></br>
+					<h:inputSecret id="txtPwd" value="#{userController.pwdForm}" maxlength="20" title="A Senha deve conter pelo menos um número, uma letra minúscula, uma letra maiúscula e um símbolo (@#$%). Mínimo 10 e máximo de 20 caracteres." />
+				</div>
+				<div class="field-container-default">
+					<h:outputLabel id="labelConfirmationPwd" for="txtConfirmationPwd" value="Confirmação Nova Senha" styleClass="label-field" /><br></br>
+					<h:inputSecret id="txtConfirmationPwd" value="#{userController.confirmationPwdForm}" maxlength="20" title="Confirme sua Nova Senha." />
+				</div>
+				<div class="button-container" style="margin-bottom: 5px;">
+					<p:commandButton id="buttonSave" value="Salvar" styleClass="button" actionListener="#{userController.updatePassword}" onclick="hideWithTimer('formChangeUserPwd\\:messagesChangeUserPwd');" update="messagesChangeUserPwd,txtPwd,txtConfirmationPwd" />
+				</div>
+			</h:form>
+		</p:dialog>
+	</ui:composition>
+</html>

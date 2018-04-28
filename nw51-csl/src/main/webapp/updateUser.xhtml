@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:p="http://primefaces.org/ui"
+	  xmlns:pe="http://primefaces.org/ui/extensions">
+	  	    
+	<ui:composition template="/layout/template.xhtml">
+		<ui:define name="body">
+			
+			<script type="text/javascript">				
+											
+				$(document).ready(function() {
+					
+				   $("#formUpdateUser\\:buttonSaveUser").click(function() {
+						$('body').ScrollTo();
+						resetCheckboxes ('chkProfileId');
+			       });
+				   
+				   $("#formUpdateUser\\:buttonDeleteUser").click(function() {
+						$('body').ScrollTo();
+						resetCheckboxes ('chkProfileId');
+			       });
+					
+			    });
+				
+			</script>
+			
+			<div id="container-content">
+				<!-- menuLeft -->
+				<ui:include src="/layout/menuLeft.xhtml" />
+				<div id="container-col-right">					
+					<h:form id="formUpdateUser" method="post" styleClass="default-form">
+						<f:metadata>
+    						<f:viewParam name="id" value="#{userController.userIdForm}"/>
+    						<f:event type="preRenderView" listener="#{userController.loadById}" />    						
+						</f:metadata>
+						<p:messages id="messagesUpdateUser" globalOnly="true" for="formUpdateUser:messagesUpdateUser" showDetail="true" autoUpdate="true" closable="true" style="width: 406px;" />
+						<pe:tooltip global="true" fixed="true" myPosition="left center" atPosition="right center"/>
+						<div class="field-container-default">
+							<h:outputLabel id="labelEmail" for="txtEmail" value="Email" styleClass="label-field" /><br></br>
+							<h:inputText id="txtEmail" value="#{userController.emailForm}" readonly="#{userController.readOnly}" title="Email do novo Usuário." />
+						</div>
+						<div class="field-container-default">
+							<h:outputLabel id="labelPwd" for="txtPwd" value="Senha" styleClass="label-field" /><br></br>
+							<h:inputSecret id="txtPwd" value="#{userController.pwdForm}" readonly="#{userController.readOnly}" title="A Senha deve conter pelo menos um número, uma letra minúscula, uma letra maiúscula e um símbolo (@#$%). Mínimo 10 e máximo de 20 caracteres." />
+						</div>
+						<label for="field-container-default" class="label-field" style="float: left;">Perfis</label>
+						<div class="field-container-default" style="margin-bottom: 13px; height:auto;">
+							<div id="field-container-datalist" title="Selecione o Perfil do novo Usuário.">
+								<p:dataList id="dataListProfiles" value="#{userController.profileVOList}" var="profileVO" type="ordered" rendered="#{not empty userController.profileVOList}">
+							        <input type="checkbox" id="chkProfileId" name="chkProfileId" value="#{profileVO.profileId}" checked="#{profileVO.selected ? 'checked' : ''}" disabled="#{userController.readOnly ? 'disabled':''}" />
+									<h:outputLabel id="labelProfile" for="chkProfileId" value="#{profileVO.name}" styleClass="label-field" />									
+							    </p:dataList>
+							</div>
+						</div>
+						<div class="field-container-default" style="margin-bottom: 13px; height:auto;" title="Estado do Usuário, o default é Desbloqueado.">
+							<label for="field-container-default" class="label-field" style="float: left;">Estado</label><br></br>
+							<h:selectOneMenu id="selectState" value="#{userController.stateForm}" disabled="#{userController.readOnly}">
+						    	 <f:selectItem itemValue="-1" itemLabel="" />
+						    	 <f:selectItem itemValue="0" itemLabel="Desbloqueado" />
+						         <f:selectItem itemValue="2" itemLabel="Bloqueado" />
+						    </h:selectOneMenu>							
+						</div>
+						<div class="field-container-default-checkbox">
+							<div style="float: left;">
+								<h:selectBooleanCheckbox id="chktStatus" value="#{userController.statusForm}" disabled="#{userController.readOnly}" title="Selecione o Status do novo Usuário. Ativo ou Inativo." />
+								<h:outputLabel id="lblStatus" for="chktStatus" value="Ativo" styleClass="label-field" />
+							</div>
+						</div>
+						<div class="button-container" style="display: #{userController.readOnly ? 'none':'block' };">
+							<p:commandButton id="buttonSaveUser" value="Salvar" styleClass="button" actionListener="#{userController.save}" onclick="hideWithTimer('formUpdateUser\\:messagesUpdateUser');" update="messagesUpdateUser, txtEmail, txtPwd, dataListProfiles, selectState, chktStatus" />
+							<p:commandButton id="buttonDeleteUser" value="Excluir" styleClass="button" actionListener="#{userController.delete}" onclick="hideWithTimer('formUpdateUser\\:messagesUpdateUser');" update="messagesUpdateUser, txtEmail, txtPwd, dataListProfiles, selectState, chktStatus" rendered="#{not empty userController.userIdForm}" style="margin-left:20px;" />							
+						</div>					
+					</h:form>																				
+				</div>
+			</div>
+			
+		</ui:define>
+	</ui:composition>
+	
+</html>

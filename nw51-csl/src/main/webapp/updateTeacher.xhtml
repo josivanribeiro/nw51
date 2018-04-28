@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:p="http://primefaces.org/ui">
+	  	    
+	<ui:composition template="/layout/template.xhtml">
+		<ui:define name="body">
+			
+			<script type="text/javascript">
+											
+				$(document).ready(function() {
+					
+				    $("#formUpdateTeacher\\:buttonSaveTeacher").click(function() {
+				    	$('body').ScrollTo();
+				    });
+				   
+				    
+				    $("#formUpdateTeacher\\:buttonDeleteTeacher").click(function() {
+				    	$('body').ScrollTo();
+				    });
+					
+			    });
+			
+			</script>
+			
+			<div id="container-content">
+				<!-- menuLeft -->
+				<ui:include src="/layout/menuLeft.xhtml" />
+				<div id="container-col-right">					
+					<h:form id="formUpdateTeacher" styleClass="default-form">						
+						<f:metadata>
+    						<f:viewParam name="id" value="#{teacherController.teacherIdForm}"/>
+    						<f:event type="preRenderView" listener="#{teacherController.loadById}" />
+    						<f:event type="preRenderView" listener="#{teacherController.initUserIdSelect}" />
+						</f:metadata>						
+						<p:messages id="messagesUpdateTeacher" globalOnly="true" for="formUpdateTeacher:messagesUpdateTeacher" showDetail="true" autoUpdate="true" closable="true" style="width: 406px;" />
+						<div class="field-container-default">
+							<h:outputLabel id="labelFullName" for="txtFullName" value="Nome Completo" styleClass="label-field" /><br></br>
+							<h:inputText id="txtFullName" value="#{teacherController.fullNameForm}" maxlength="150" readonly="#{teacherController.readOnly}" />
+						</div>
+						<div class="field-container-default">
+							<h:outputLabel id="labelUserId" for="selectUserId" value="Usuário Associado" styleClass="label-field" /><br></br>
+							<h:selectOneMenu id="selectUserId" value="#{teacherController.userIdForm}" disabled="#{teacherController.readOnly}">
+   								<f:selectItems value="#{teacherController.userIdMap}" />
+   							</h:selectOneMenu>
+						</div>
+						<div class="field-container-default">
+							<h:outputLabel id="labelPhone" for="txtPhone" value="Fone" styleClass="label-field" /><br></br>
+							<h:inputText id="txtPhone" value="#{teacherController.phoneForm}" maxlength="13" readonly="#{teacherController.readOnly}" />
+						</div>
+						<div class="field-container-default">
+							<h:outputLabel id="labelMobile" for="txtMobile" value="Celular" styleClass="label-field" /><br></br>
+							<h:inputText id="txtMobile" value="#{teacherController.mobileForm}" maxlength="13" readonly="#{teacherController.readOnly}" />
+						</div>
+						<div class="button-container" style="display: #{teacherController.readOnly ? 'none':'block' };">
+							<p:commandButton id="buttonSaveTeacher" value="Salvar" styleClass="button" actionListener="#{teacherController.save}" onclick="hideWithTimer('formUpdateTeacher\\:messagesUpdateTeacher');" update="messagesUpdateTeacher, txtFullName, selectUserId, txtPhone, txtMobile" />
+							<p:commandButton id="buttonDeleteTeacher" value="Excluir" styleClass="button" actionListener="#{teacherController.delete}" onclick="hideWithTimer('formUpdateTeacher\\:messagesUpdateTeacher');" update="messagesUpdateTeacher, txtFullName, selectUserId, txtPhone, txtMobile" rendered="#{not empty teacherController.teacherIdForm}" style="margin-left:20px;" />
+						</div>
+					</h:form>							
+				</div>
+			</div>		
+			
+		</ui:define>
+	</ui:composition>
+	
+</html>

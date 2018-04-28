@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:p="http://primefaces.org/ui">
+	  	    
+	<ui:composition template="/layout/template.xhtml">
+		<ui:define name="body">
+			
+			<script type="text/javascript">
+				
+				$(document).ready(function() {
+				   	
+					$('.resultTable tr').click( function() {
+						var id = $(this).find('td:first').text().trim();
+						if (parseInt (id) > 0) {
+							redirectTo ('updateUser.page?id=' + id);
+						}
+					});
+				   
+			    });			   				
+			
+			</script>
+			
+			<div id="container-content">
+				<!-- menuLeft -->
+				<ui:include src="/layout/menuLeft.xhtml" />
+				<f:metadata>
+					<f:event type="preRenderView" listener="#{userController.findAll}" />					
+				</f:metadata>
+				<div id="container-col-right">					
+					<div id="container-button-add">
+						<p:commandButton value="Adicionar" id="buttonAddUser" styleClass="button" action="#{userController.goToAddUser}" rendered="#{not userController.readOnly}" />
+					</div>
+					<div id="container-search-result">						
+						<h:dataTable id="resultTableUsers" styleClass="resultTable" value="#{userController.userVOList}" var="userVO" emptyMessage="Nenhum registro foi encontrado.">
+						    <h:column>
+						        <f:facet name="header">
+						            <h:outputText value="Id" />
+						        </f:facet>
+						        <div align="center">
+						        	<h:outputText value="#{userVO.userId}" />							        	
+						        </div>
+						    </h:column>
+						    <h:column>
+						        <f:facet name="header">
+						            <h:outputText value="Email" />
+						        </f:facet>
+						        <div align="center">
+						        	<h:outputText value="#{userVO.email}" />
+						        </div>
+						    </h:column>
+						    <h:column>
+						        <f:facet name="header">
+						            <h:outputText value="Estado" />
+						        </f:facet>							        
+       							<div align="center">
+					        		<h:outputLabel value="#{userVO.state == 2 ? 'Bloqueado' : 'Desbloqueado'}" />
+					        	</div>
+						    </h:column>
+						    <h:column>
+						        <f:facet name="header">
+						            <h:outputText value="Status" />
+						        </f:facet>							        
+       							<div align="center">
+					        		<h:outputLabel value="#{userVO.status ? 'Ativo' : 'Inativo'}" />
+					        	</div>      															        
+						    </h:column>
+						</h:dataTable>						
+					</div>										
+			</div>
+		</div>		
+			
+		</ui:define>
+	</ui:composition>
+	
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:p="http://primefaces.org/ui">
+	  	    
+	<ui:composition template="/layout/template.xhtml">
+		<ui:define name="body">
+			
+			<script type="text/javascript">
+											
+				$(document).ready(function() {
+					
+				    $("#formUpdateRole\\:buttonSaveRole").click(function() {
+				    	$('body').ScrollTo();
+				    });
+				   
+				    
+				    $("#formUpdateRole\\:buttonDeleteRole").click(function() {
+				    	$('body').ScrollTo();
+				    });
+					
+			    });			
+			
+			</script>
+			
+			<div id="container-content">
+				<!-- menuLeft -->
+				<ui:include src="/layout/menuLeft.xhtml" />
+				<div id="container-col-right">					
+					<h:form id="formUpdateRole" styleClass="default-form">						
+						<f:metadata>
+    						<f:viewParam name="id" value="#{roleController.roleIdForm}"/>
+    						<f:event type="preRenderView" listener="#{roleController.loadById}" />
+						</f:metadata>						
+						<p:messages id="messagesUpdateRole" globalOnly="true" for="formUpdateRole:messagesUpdateRole" showDetail="true" autoUpdate="true" closable="true" style="width: 406px;" />
+						<div class="field-container-default">
+							<h:outputLabel id="labelName" for="txtName" value="Nome" styleClass="label-field" /><br></br>
+							<h:inputText id="txtName" value="#{roleController.nameForm}" readonly="#{roleController.readOnly}" />
+						</div>
+						<div class="button-container" style="display: #{roleController.readOnly ? 'none':'block' };">
+							<p:commandButton id="buttonSaveRole" value="Salvar" styleClass="button" actionListener="#{roleController.save}" onclick="hideWithTimer('formUpdateRole\\:messagesUpdateRole');" update="messagesUpdateRole, txtName" />
+							<p:commandButton id="buttonDeleteRole" value="Excluir" styleClass="button" actionListener="#{roleController.delete}" onclick="hideWithTimer('formUpdateRole\\:messagesUpdateRole');" update="messagesUpdateRole, txtName" rendered="#{not empty roleController.roleIdForm}" style="margin-left:20px;" />
+						</div>
+					</h:form>							
+				</div>
+			</div>		
+			
+		</ui:define>
+	</ui:composition>
+	
+</html>

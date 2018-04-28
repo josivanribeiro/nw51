@@ -1,0 +1,192 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:p="http://primefaces.org/ui"
+	  xmlns:pe="http://primefaces.org/ui/extensions">
+	  	    
+	<ui:composition template="/layout/template.xhtml">
+		<ui:define name="body">
+			
+			<script type="text/javascript">
+														
+				$(document).ready(function() {
+					
+				   $("table[role='grid']").delegate("tr", "click", function(e) {
+					   var courseId = $('#formUpdateCourse\\:hiddenCourseId').val();
+					   var classId = $(this).find('td:first').text().trim();						
+					   if (parseInt (classId) > 0) {
+					   		redirectTo ("updateClass.page?courseId=" + courseId + "&amp;id=" + classId);
+					   }
+				   });
+				   					 
+				   $("#formUpdateCourse\\:buttonSaveCourse").click(function() {
+						$('body').ScrollTo();
+			       });
+				   
+				   $("#formUpdateCourse\\:buttonDeleteCourse").click(function() {
+						$('body').ScrollTo();
+			       });
+				   				   
+				   $('#formUpdateCourse\\:txtSummary').maxlength({max: 1000, showFeedback: false});
+				   $('#formUpdateCourse\\:txtGeneralGoal').maxlength({max: 300, showFeedback: false});
+				   $('#formUpdateCourse\\:txtSpecificGoals').maxlength({max: 1000, showFeedback: false});
+				   $('#formUpdateCourse\\:txtResources').maxlength({max: 500, showFeedback: false});
+				   $('#formUpdateCourse\\:txtEvaluation').maxlength({max: 1000, showFeedback: false});
+				   $('#formUpdateCourse\\:txtBibliography').maxlength({max: 1500, showFeedback: false});			   
+				   
+			    });			
+					
+			</script>			
+				
+			<div id="container-content">					
+				<!-- menuLeft -->
+				<ui:include src="/layout/menuLeft.xhtml" />				
+				<div id="container-col-right">				
+					<h:form id="formUpdateCourse">					
+						<h:inputHidden value="#{courseController.courseIdForm}" id="hiddenCourseId" />
+						<h:inputHidden value="#{courseController.teachingPlanIdForm}" id="hiddenTeachingPlanId" />
+						<f:metadata>
+    						<f:viewParam name="id" value="#{courseController.courseIdForm}"/>
+    						<f:event type="preRenderView" listener="#{courseController.loadById}" />    						
+    				    </f:metadata>
+						<p:messages id="messagesUpdateCourse" globalOnly="true" for="formUpdateCourse:messagesUpdateCourse" showDetail="true" autoUpdate="true" closable="true" style="width: 96%;" />
+						<pe:tooltip global="true" fixed="true" myPosition="left center" atPosition="right center"/>						
+						<div class="field-container-default">
+							<h:outputLabel id="labelName" for="txtName" value="Nome" styleClass="label-field" /><br></br>
+							<p:inputText id="txtName" value="#{courseController.nameForm}" readonly="#{courseController.readOnly}" maxlength="200" title="Nome do Curso, por exemplo, HTML5." />														
+						</div>
+						<div class="field-container-default">
+							<h:outputLabel id="labelCourseType" for="selectCourseType" value="Tipo do Curso" styleClass="label-field" /><br></br>
+							<h:selectOneMenu id="selectCourseType" value="#{courseController.courseTypeForm}" disabled="#{courseController.readOnly}" title="Os Cursos são divididos em 7 áreas.">
+   								<f:selectItems value="#{courseController.courseTypeMap}" />
+   							</h:selectOneMenu>
+						</div>						
+						<h:outputLabel id="labelTeachingPlan" value="Plano de Ensino" styleClass="label-field" />												
+						<div class="field-container-default table-border" style="height: auto; width:598px;">						
+														
+							<div class="field-container-default">
+								<h:outputLabel id="labelWorkloadHoursTheoryType" for="selectWorkloadHoursTheoryType" value="Carga Horária de Teoria" styleClass="label-field" /><br></br>
+								<h:selectOneMenu id="selectWorkloadHoursTheoryType" value="#{courseController.workloadHoursTheoryTypeForm}" disabled="#{courseController.readOnly}" title="Quantidade de Aulas Teóricas, em horas.">
+	   								<f:selectItems value="#{courseController.workloadHoursTheoryTypeMap}" />
+	   							</h:selectOneMenu>
+							</div>
+							<div class="field-container-default">
+								<h:outputLabel id="labelWorkloadHoursPracticeType" for="selectWorkloadHoursPracticeType" value="Carga Horária de Prática" styleClass="label-field" /><br></br>
+								<h:selectOneMenu id="selectWorkloadHoursPracticeType" value="#{courseController.workloadHoursPracticeTypeForm}" disabled="#{courseController.readOnly}" title="Quantidade de Aulas Práticas, em horas.">
+	   								<f:selectItems value="#{courseController.workloadHoursPracticeTypeMap}" />
+	   							</h:selectOneMenu>
+							</div>							
+							<div class="field-container-default">
+								<h:outputLabel id="labelTeacherId" for="selectTeacherId" value="Professor" styleClass="label-field" /><br></br>
+								<h:selectOneMenu id="selectTeacherId" value="#{courseController.teacherIdForm}" disabled="#{courseController.readOnly}" title="Professor Responsável pelo Curso.">
+	   								<f:selectItems value="#{courseController.teacherIdMap}" />
+	   							</h:selectOneMenu>
+							</div>
+							<div class="field-container-default" style="height: auto;">
+								<h:outputLabel id="labelSummary" for="txtSummary" value="Ementa" styleClass="label-field" /><br></br>
+								<p:inputTextarea id="txtSummary" value="#{courseController.summaryForm}" rows="5" cols="50" style="width: 588px;" readonly="#{courseController.readOnly}" title="Resumo dos Tópicos Principais do Curso." />
+							</div>
+							<div class="field-container-default" style="height: auto;">
+								<h:outputLabel id="labelGeneralGoal" for="txtGeneralGoal" value="Objetivo Geral" styleClass="label-field" /><br></br>
+								<p:inputTextarea id="txtGeneralGoal" value="#{courseController.generalGoalForm}" rows="3" cols="50" style="width: 588px;" readonly="#{courseController.readOnly}" title="Propósito do Curso." />
+							</div>
+							<div class="field-container-default" style="height: auto;">
+								<h:outputLabel id="labelSpecificGoals" for="txtSpecificGoals" value="Objetivos Específicos" styleClass="label-field" /><br></br>
+								<p:inputTextarea id="txtSpecificGoals" value="#{courseController.specificGoalsForm}" rows="5" cols="50" style="width: 588px;" readonly="#{courseController.readOnly}" title="Propósitos Específicos do Curso." />
+							</div>
+							<div class="field-container-default" style="height: auto;">
+								<h:outputLabel id="labelContent" value="Conteúdo" styleClass="label-field" /><br></br>
+								<div id="container-button-add" style="margin-top: 0px; margin-bottom: 27px; margin-right: 26px;">
+									<p:commandButton value="Adicionar Item" id="buttonAddContentItem" styleClass="button" oncomplete="PF('wvAddContentItem').show()" style="width: 106px;" title="Adiciona um Item de Conteúdo, por exemplo, 1 SISTEMAS DE NUMERAÇÃO." rendered="#{not courseController.readOnly}" />																				
+								</div>								
+								<p:treeTable id="resultTableContentItems" styleClass="resultTable" value="#{courseController.root}" var="contentItemVO" emptyMessage="Nenhum registro foi encontrado.">
+							        <p:column headerText="Numeração" style="width:15%">							            
+							            <p:inputText value="#{contentItemVO.numeration}" style="width:75%;" maxlength="15" title="Edição da Numeração do Item de Conteúdo." readonly="#{courseController.readOnly}" />
+							        </p:column>
+							        <p:column headerText="Item" style="width:54%">
+							            <p:inputText value="#{contentItemVO.name}" style="width:97%;" maxlength="200" title="Edição do Nome do Item de Conteúdo." readonly="#{courseController.readOnly}" />
+							        </p:column>							        
+							        <p:column style="width:15%">
+							            <p:commandButton value="Excluir Item" id="buttonDeleteItem" styleClass="button" action="#{courseController.deleteContentItem(contentItemVO.numeration)}" update="formUpdateCourse:resultTableContentItems, formUpdateCourse:selectContentItemNumerationFather" style="width: 106px;" title="Exclusão do Item de Conteúdo." rendered="#{not courseController.readOnly}" />			            
+							        </p:column>							        
+							        <p:column style="width:16%">		        
+							        	<div style="float: right;">
+							        		<p:commandButton value="Adicionar Aula" id="buttonAddClass" styleClass="button" action="#{courseController.goToUpdateClass(contentItemVO.contentItemId, contentItemVO.numeration, contentItemVO.name, null)}" rendered="#{courseController.isClassAssociated(contentItemVO.numeration, contentItemVO.contentItemId) and empty contentItemVO.classVO and not courseController.readOnly}" style="width: 106px;" title="Adicionar Aula a partir deste Item de Conteúdo." />
+							        		<p:commandButton value="Atualizar Aula" id="buttonUpdateClass" styleClass="button" action="#{courseController.goToUpdateClass(contentItemVO.contentItemId, contentItemVO.numeration, contentItemVO.name, contentItemVO.classVO.classId)}" rendered="#{courseController.isClassAssociated(contentItemVO.numeration, contentItemVO.contentItemId) and not empty contentItemVO.classVO.classId and not courseController.readOnly}" style="width: 106px;" title="Atualizar Aula a partir deste Item de Conteúdo." />
+							        	</div>							        								        
+							        </p:column>
+							    </p:treeTable>												    							    
+							    <p:dialog header="Adicionar Item" id="dlgAddContentItem" widgetVar="wvAddContentItem" modal="true" resizable="false" width="464">
+									<p:messages id="messagesAddContentItem" globalOnly="true" for="formUpdateCourse:messagesAddContentItem" showDetail="true" autoUpdate="true" closable="true" style="width: 406px; margin-bottom: 17px;" />
+									<div class="field-container-default">
+										<h:outputLabel id="labelContentItemNumerationFather" for="selectContentItemNumerationFather" value="Item Pai" styleClass="label-field" /><br></br>
+										<h:selectOneMenu id="selectContentItemNumerationFather" value="#{courseController.contentItemNumerationFatherForm}" title="Um Item de Conteúdo pode ter um Pai ou não, por exemplo, 1.1 Introdução é filho de 1 SISTEMAS DE NUMERAÇÃO.">
+			   								<f:selectItems value="#{courseController.contentItemMap}" />
+			   							</h:selectOneMenu>
+									</div>
+									<div class="field-container-default">
+										<h:outputLabel id="labelNumeration" for="txtItemNumeration" value="Numeração" styleClass="label-field" /><br></br>
+										<h:inputText id="txtItemNumeration" value="#{courseController.contentItemNumerationForm}" maxlength="15" title="Numeração do Item de Conteúdo, por exemplo, 1.1." />								
+									</div>
+									<div class="field-container-default">
+										<h:outputLabel id="labelItemName" for="txtItemName" value="Item" styleClass="label-field" /><br></br>
+										<h:inputText id="txtItemName" value="#{courseController.contentItemNameForm}" maxlength="200" title="Nome do Item de Conteúdo, por exemplo, Introdução." />
+									</div>
+									<div class="button-container" style="margin-bottom: 5px;">
+										<p:commandButton id="buttonUpdateContentItem" value="Salvar" styleClass="button" actionListener="#{courseController.saveContentItemListener}" onclick="hideWithTimer('formUpdateCourse\\:messagesAddContentItem');" update="messagesAddContentItem, formUpdateCourse:resultTableContentItems, formUpdateCourse:selectContentItemNumerationFather, txtItemNumeration, txtItemName" />
+									</div>									
+								</p:dialog>							    
+							</div>
+							<div class="field-container-default">
+								<h:outputLabel id="labelTeachingStrategyType" for="selectTeachingStrategyType" value="Estratégia de Ensino" styleClass="label-field" /><br></br>
+								<h:selectOneMenu id="selectTeachingStrategyType" value="#{courseController.teachingStrategyTypeForm}" disabled="#{courseController.readOnly}" title="Técnicas usadas para apoiar o ensino e a aprendizagem.">
+	   								<f:selectItems value="#{courseController.teachingStrategyTypeMap}" />
+	   							</h:selectOneMenu>
+							</div>
+							<div class="field-container-default" style="height: auto;">
+								<h:outputLabel id="labelResources" for="txtResources" value="Recursos" styleClass="label-field" /><br></br>
+								<p:inputTextarea id="txtResources" value="#{courseController.resourcesForm}" rows="2" cols="50" style="width: 588px;" readonly="#{courseController.readOnly}" title="Recursos usados para facilitar a aprendizagem, por exemplo, Datashow, Quadro magnético, etc." />
+							</div>
+							<div class="field-container-default" style="height: auto;">
+								<h:outputLabel id="labelEvaluation" for="txtEvaluation" value="Avaliação" styleClass="label-field" /><br></br>
+								<p:inputTextarea id="txtEvaluation" value="#{courseController.evaluationForm}" rows="3" cols="50" style="width: 588px;" readonly="#{courseController.readOnly}" title="Forma de Avaliação do Curso, por exemplo, Exercícios, Desafios, Provas, etc." />
+							</div>
+							<div class="field-container-default" style="height: auto;">
+								<h:outputLabel id="labelBibliography" for="txtBibliography" value="Bibliografia" styleClass="label-field" /><br></br>
+								<p:inputTextarea id="txtBibliography" value="#{courseController.bibliographyForm}" rows="4" cols="50" style="width: 588px;" readonly="#{courseController.readOnly}" title="Referências Bibliográficas usadas para compor o Curso." />
+							</div>
+						</div>												
+						<div class="field-container-default" style="display:#{not empty courseController.courseIdForm ? 'block': 'none'}">
+							<h:outputLabel id="labelCreationDate" for="txtCreationDate" value="Data de Criação" styleClass="label-field" /><br></br>
+							<h:inputText id="txtCreationDate" value="#{courseController.creationDateForm}" readonly="true" title="Data de Criação do Curso.">
+								<f:convertDateTime pattern="d/M/yyyy HH:mm" />							
+							</h:inputText>
+						</div>
+						<div class="field-container-default" style="display:#{not empty courseController.courseIdForm ? 'block': 'none'}">
+							<h:outputLabel id="labelLastUpdateDate" for="txtLastUpdateDate" value="Data de Última Atualização" styleClass="label-field" rendered="#{not empty courseController.courseIdForm}" /><br></br>
+							<h:inputText id="txtLastUpdateDate" value="#{courseController.lastUpdateDateForm}" readonly="true" rendered="#{not empty courseController.courseIdForm}" title="Data da Última Atualização do Curso.">
+								<f:convertDateTime pattern="d/M/yyyy HH:mm" />
+							</h:inputText>
+						</div>
+						<div class="field-container-default-checkbox">
+							<div style="float: left; margin-bottom: 17px;">
+								<h:selectBooleanCheckbox id="chktStatus" value="#{courseController.statusForm}" disabled="#{courseController.readOnly}" title="Status do Curso, Ativo ou Inativo." />
+								<h:outputLabel id="lblStatus" for="chktStatus" value="Ativo" styleClass="label-field" />
+							</div>
+						</div>
+						<div class="button-container" style="width:100%; display: #{not courseController.readOnly ? 'block': 'none'};">
+							<div class="button-container-delete" style="width: 87%; display: #{courseController.courseIdForm ne null ? 'block': 'none'};">
+								<p:commandButton id="buttonDeleteCourse" value="Excluir" styleClass="button" actionListener="#{courseController.delete}" onclick="hideWithTimer('formUpdateCourse\\:messagesUpdateCourse');" update="messagesUpdateCourse, hiddenCourseId, hiddenTeachingPlanId, txtName, selectCourseType, selectWorkloadHoursTheoryType, selectWorkloadHoursPracticeType, selectTeacherId, txtSummary, txtGeneralGoal, txtSpecificGoals, resultTableContentItems, selectTeachingStrategyType, txtResources, txtEvaluation, txtBibliography, txtCreationDate, txtLastUpdateDate, chktStatus" style="margin-left:20px;" />	
+							</div>
+							<p:commandButton id="buttonSaveCourse" value="Salvar" styleClass="button" actionListener="#{courseController.save}" onclick="hideWithTimer('formUpdateCourse\\:messagesUpdateCourse');" update="messagesUpdateCourse, hiddenCourseId, hiddenTeachingPlanId, txtName, selectCourseType, selectWorkloadHoursTheoryType, selectWorkloadHoursPracticeType, selectTeacherId, txtSummary, txtGeneralGoal, txtSpecificGoals, resultTableContentItems, selectTeachingStrategyType, txtResources, txtEvaluation, txtBibliography, txtCreationDate, txtLastUpdateDate, chktStatus" />
+						</div>
+					</h:form>																				
+				</div>
+			</div>		
+			
+		</ui:define>
+	</ui:composition>
+	
+</html>

@@ -1,0 +1,113 @@
+.ui-corner-all, .ui-corner-bottom, .ui-corner-right, .ui-corner-br {
+    border-bottom-right-radius: 4px;
+}
+.ui-corner-all, .ui-corner-bottom, .ui-corner-left, .ui-corner-bl {
+    border-bottom-left-radius: 4px;
+}
+.ui-corner-all, .ui-corner-top, .ui-corner-right, .ui-corner-tr {
+    border-top-right-radius: 4px;
+}
+.ui-corner-all, .ui-corner-top, .ui-corner-left, .ui-corner-tl {
+    border-top-left-radius: 4px;
+}
+.ui-state-hover, .ui-widget-content .ui-state-hover, .ui-widget-header .ui-state-hover, .ui-state-focus, .ui-widget-content .ui-state-focus, .ui-widget-header .ui-state-focus {
+    border: 1px solid #fff;
+    background: #fff;
+    font-weight: normal;
+    color: #333;
+}
+.ui-widget {
+    font-family: "Lato", sans-serif;
+    font-size: 14px;
+}
+.ui-inputfield {
+    height: 40px;
+    /* margin-bottom: 15px; */
+    vertical-align: middle;
+    background: #dbf1d0;
+    border: 1px solid #dbf1d0;
+    font-size: 16px;
+    font-weight: normal;
+    line-height: 40px;
+    color: #666666;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+.ui-slider-horizontal .ui-slider-handle {
+    top: 2px;
+    margin-left: -.6em;
+}
+.ui-slider .ui-slider-handle {
+    position: absolute;
+    z-index: 2;
+    width: 1.2em;
+    height: 1.2em;
+    cursor: default;    
+    background: #339900;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+}
+.ui-widget-header {
+    border: none;
+    background: none;
+    color: #000;
+    font-weight: bold;
+}
+.ui-widget-header .ui-state-default {
+    /* border: 1px solid #ccc; */
+    border: none;
+    /* background: #f6f6f6 url(images/ui-bg_glass_100_f6f6f6_1x400.png) 50% 50% repeat-x; */
+    background: #fff;
+    font-weight: bold;
+    color: #000;
+}
+.ui-paginator .ui-paginator-current, .ui-paginator .ui-paginator-rpp-options {
+    margin-left: 0px;
+    margin-right: 0px;
+    background-image: none;
+    float: left;
+}
+.ui-paginator {
+    margin: 0;
+    text-align: inherit;
+    padding: 2px;
+}
+.ui-datatable tbody td {
+    border-color: #dbf1d0;    
+}
+th.ui-state-default {
+    border: 1px solid #fff;
+    background: #fff;
+    font-weight: bold;
+    color: #000;
+}
+.ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight {
+    border: none;
+    background: #7fc85c !important;
+    color: #000;
+}
+
+.ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active {
+    border: 1px solid #339900;
+    background: #fff url(images/ui-bg_glass_65_ffffff_1x400.png) 50% 50% repeat-x;
+    font-weight: bold;
+    color: #339900;
+}
+
+/* .ui-datatable tbody td {
+    padding: 0px;
+    height: 60px;
+    overflow: hidden;
+    border-width: 1px;
+    border-style: solid;
+}
+
+.ui-datatable tbody td div {
+	padding-top: 15px;
+	height: 60px;	
+} */

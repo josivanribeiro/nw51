@@ -1,0 +1,320 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:p="http://primefaces.org/ui"
+	  xmlns:pe="http://primefaces.org/ui/extensions">
+	  	    
+	<ui:composition template="/layout/template.xhtml">
+		<ui:define name="body">
+			
+			<script type="text/javascript">
+											
+				$(document).ready(function() {
+					
+					$("table[role='grid']").eq(0).delegate("tr", "click", function(e) {
+						var slideId = $(this).find('td:first').text().trim();
+						if (parseInt (slideId) > 0) {
+							redirectTo ('updateSlide.page?id=' + slideId);
+						}
+						console.log ('click table slide');
+				    });
+					
+					$("table[role='grid']").eq(1).delegate("tr", "click", function(e) {
+						var exerciseId = $(this).find('td:first').text().trim();
+						if (parseInt (exerciseId) > 0) {
+							redirectTo ('updateExercise.page?id=' + exerciseId);
+						}
+						console.log ('click table exercise');
+				    });
+					
+					$("#formUpdateClass\\:buttonAddSlide").click(function() {
+						$('body').ScrollTo();
+				    });
+					
+				    $("#formUpdateClass\\:buttonAddExercise").click(function() {
+						$('body').ScrollTo();
+				    });
+					
+					$("#formUpdateClass\\:buttonSaveClass").click(function() {
+						$('body').ScrollTo();
+				    });
+					
+					$("#formUpdateClass\\:buttonDeleteClass").click(function() {
+						$('body').ScrollTo();						
+				    });
+					
+					$('input[type="checkbox"]').eq(0).click (function() {						
+						var chkToolId1Checked = $('input[type="checkbox"]').eq(0).is(':checked');
+						var chkToolId2Checked = $('input[type="checkbox"]').eq(1).is(':checked');
+						if (chkToolId1Checked) {
+							showHideSlide (true);
+						} else if (!chkToolId2Checked) {
+							showHideSlide (false);
+						}
+					});
+					
+					$('input[type="checkbox"]').eq(1).click (function() {
+						var chkToolId1Checked = $('input[type="checkbox"]').eq(0).is(':checked');
+						var chkToolId2Checked = $('input[type="checkbox"]').eq(1).is(':checked');
+						if (chkToolId2Checked) {
+							showHideSlide (true);							
+						} else if (!chkToolId1Checked) {
+							showHideSlide (false);
+						}
+					});
+					
+					$('input[type="checkbox"]').eq(2).click (function() {
+						var chkToolId3Checked = $('input[type="checkbox"]').eq(2).is(':checked');
+						var chkToolId4Checked = $('input[type="checkbox"]').eq(3).is(':checked');
+						if (chkToolId3Checked) {
+							showHideExercise (true);
+						} else if (!chkToolId4Checked) {
+							showHideExercise (false);
+						}
+					});
+					
+					$('input[type="checkbox"]').eq(3).click (function() {
+						var chkToolId3Checked = $('input[type="checkbox"]').eq(2).is(':checked');
+						var chkToolId4Checked = $('input[type="checkbox"]').eq(3).is(':checked');
+						if (chkToolId4Checked) {
+							showHideExercise (true);
+						} else if (!chkToolId3Checked) {
+							showHideExercise (false);
+						}
+					});
+					
+					$( ".ui-icon-plusthick" ).remove();
+					
+					$('#formUpdateClass\\:txtDescription').maxlength({max: 500, showFeedback: false});
+					
+					$('#formUpdateClass\\:txtSkills').maxlength({max: 1000, showFeedback: false});
+					
+					$('#formUpdateClass\\:txtNotes').maxlength({max: 1000, showFeedback: false});
+					
+					$("span.ui-button.ui-widget.ui-state-default.ui-corner-all.ui-button-text-icon-left.ui-fileupload-choose").find( "span" ).css('position', 'relative');
+					$("span.ui-button.ui-widget.ui-state-default.ui-corner-all.ui-button-text-icon-left.ui-fileupload-choose").find( "span" ).css('top', '6px');
+					$("span.ui-button.ui-widget.ui-state-default.ui-corner-all.ui-button-text-icon-left.ui-fileupload-choose").find( "span" ).css('left', '7px');
+					
+			    });				
+				
+				/**
+				 * Shows or hides the slide elements.
+				 */
+				function showHideSlide (show) {
+					if (show) {
+						$("#formUpdateClass\\:labelSlide").show();
+						$("#slides-container").show();
+					} else {
+						$("#formUpdateClass\\:labelSlide").hide();
+						$("#slides-container").hide();			
+					}
+				}
+				
+				/**
+				 * Shows or hides the exercise elements.
+				 */
+				function showHideExercise (show) {
+					if (show) {
+						$("#formUpdateClass\\:labelExercise").show();
+						$("#exercises-container").show();
+					} else {
+						$("#formUpdateClass\\:labelExercise").hide();
+						$("#exercises-container").hide();			
+					}
+				}				
+			
+			</script>
+			
+			<div id="container-content">
+				<!-- menuLeft -->
+				<ui:include src="/layout/menuLeft.xhtml" />
+				<div id="container-col-right">					
+					<h:form id="formUpdateClass" enctype="multipart/form-data">
+						<h:inputHidden value="#{classController.courseIdForm}" id="hiddenCourseId" />
+						<h:inputHidden value="#{classController.classIdForm}" id="hiddenClassId" />
+						<h:inputHidden value="#{classController.classPlanIdForm}" id="hiddenClassPlanId" />
+						<f:metadata>
+    						<f:viewParam name="id" value="#{classController.classIdForm}"/>
+    						<f:viewParam name="courseId" value="#{classController.courseIdForm}"/>
+    						<f:viewParam name="contentItemId" value="#{classController.contentItemIdForm}"/>
+    						<f:viewParam name="contentItemNumeration" value="#{classController.contentItemNumerationForm}"/>
+    						<f:viewParam name="contentItemName" value="#{classController.contentItemNameForm}"/>
+    						<f:event type="preRenderView" listener="#{classController.findClassAverageTime}" />
+    						<f:event type="preRenderView" listener="#{classController.loadById}" />
+    						<f:event type="preRenderView" listener="#{classController.setClassName}" />
+						</f:metadata>
+						<p:messages id="messagesUpdateClass" globalOnly="true" for="formUpdateClass:messagesUpdateClass" showDetail="true" autoUpdate="true" closable="true" style="width: 640px;" />
+						<pe:tooltip global="true" fixed="true" myPosition="left center" atPosition="right center"/>
+						<div class="field-container-default">
+							<h:outputLabel id="labelName" for="txtName" value="Nome" styleClass="label-field" /><br></br>
+							<h:inputText id="txtName" value="#{classController.nameForm}" readonly="true" maxlength="200" style="width: 96%;" title="Nome da Aula, será preenchido automaticamente." />
+						</div>
+						<div class="field-container-default" style="height: auto;">
+							<h:outputLabel id="labelDescription" for="txtDescription" value="Descrição" styleClass="label-field" /><br></br>
+							<p:inputTextarea id="txtDescription" value="#{classController.descriptionForm}" rows="4" cols="50" style="width: 630px;" readonly="#{courseController.readOnly}" title="Descrição do que será abordado na Aula." />
+						</div>
+						<h:outputLabel id="labelClassPlan" value="Plano de Aula" styleClass="label-field" />
+						<div class="field-container-default table-border" style="height: auto; width:598px;">
+							<label for="field-container-default" class="label-field" style="float: left;">Ferramentas</label>
+							<div class="field-container-default" style="margin-bottom: 13px; height:auto;">
+								<div id="field-container-datalist" style="margin-top: 20px; width: 347px;" title="Ferramentas que podem ser utilizadas na Aula.">									
+									<h:selectManyCheckbox id="selectTools" value="#{classController.selectedToolArr}" disabled="#{courseController.readOnly}">
+								    	 <f:selectItem itemValue="1" itemLabel="Slide" />
+								         <f:selectItem itemValue="2" itemLabel="Videoaula" />
+								         <f:selectItem itemValue="3" itemLabel="Exercício" />
+								         <f:selectItem itemValue="4" itemLabel="Desafio" />								         
+								    </h:selectManyCheckbox>
+								</div>
+							</div>
+							<div class="field-container-default" style="height: auto;">
+								<h:outputLabel id="labelAverageTime" for="txtAverageTime" value="Duração Média da Aula (Minutos)" styleClass="label-field" /><br></br>
+								<h:inputText id="txtAverageTime" value="#{classController.averageTimeForm}" readonly="true" maxlength="200" style="width: 592px;" title="Cálculo da Duração Média da Aula, usa o Número Total de Horas do Curso." />								
+							</div>
+							<div class="field-container-default" style="height: auto;">
+								<h:outputLabel id="labelSkills" for="txtSkills" value="Habilidades" styleClass="label-field" /><br></br>
+								<p:inputTextarea id="txtSkills" value="#{classController.skillsForm}" rows="4" cols="50" style="width: 588px;" readonly="#{courseController.readOnly}" title="Habilidades (Skills) que o Aluno vai adquirir nesta Aula." />
+							</div>
+						</div>						
+						<h:outputLabel id="labelSlide" value="Slides" styleClass="label-field" style="display: #{classController.slideEnabled ? 'display':'none'};" />
+						<div id="slides-container" class="field-container-default" style="height: auto; display: #{classController.slideEnabled ? 'display':'none'};">
+							<div class="field-container-default table-border" style="height: auto; width:598px;" id="container-search-result">
+								<div id="container-button-add" style="margin-top: 0px; margin-bottom: 27px; margin-right: 51px;">
+									<p:commandButton value="Adicionar Slide" id="buttonAddSlide" styleClass="button" action="#{classController.goToAddSlide}" onclick="hideWithTimer('formUpdateClass\\:messagesUpdateClass,');" style="width: 131px;" rendered="#{not courseController.readOnly}" title="Adiciona um novo Slide." />
+								</div>
+								<p:dataTable id="resultTableSlides" styleClass="resultTable" value="#{classController.slideVOList}" var="slideVO" 
+									rows="5"
+									paginator="true" 
+									paginatorTemplate="{CurrentPageReport} {PreviousPageLink} {NextPageLink}"
+		                         	rowsPerPageTemplate="5"
+		                         	emptyMessage="Nenhum registro foi encontrado.">
+								    <p:column headerText="Id" sortBy="#{slideVO.slideId}">
+								        <div align="center">
+								        	<h:outputText value="#{slideVO.slideId}" />
+								        </div>
+								    </p:column>
+								    <p:column headerText="Nome" sortBy="#{slideVO.name}">
+								        <div align="center">
+								        	<h:outputText value="#{slideVO.name}" />
+								        </div>
+								    </p:column>
+								    <p:column headerText="Status" sortBy="#{slideVO.status}">
+								        <div align="center">
+								        	<h:outputText value="#{slideVO.status == 1 ? 'Ativo':'Inativo'}" />
+								        </div>
+								    </p:column>
+								    <p:column headerText="Sequência" sortBy="#{slideVO.sequenceNumber}">
+								        <div align="center">
+								        	<h:outputText value="#{slideVO.sequenceNumber}" />
+								        </div>
+								    </p:column>
+								</p:dataTable>
+							</div>
+						</div>						
+						<h:outputLabel id="labelExercise" value="Exercícios" styleClass="label-field" style="display: #{classController.exerciseEnabled ? 'display':'none'};" />
+						<div id="exercises-container" class="field-container-default" style="height: auto;display: #{classController.exerciseEnabled ? 'display':'none'};">
+							<div class="field-container-default table-border" style="height: auto; width:598px;" id="container-search-result">
+								<div id="container-button-add" style="margin-top: 0px; margin-bottom: 27px; margin-right: 53px;">
+									<p:commandButton value="Adicionar Exercício" id="buttonAddExercise" styleClass="button" action="#{classController.goToAddExercise}" onclick="hideWithTimer('formUpdateClass\\:messagesUpdateClass,');" style="width: 133px;" rendered="#{not courseController.readOnly}" title="Adiciona um novo Exercício." />
+								</div>
+								<p:dataTable id="resultTableExercises" styleClass="resultTable" value="#{classController.exerciseVOList}" var="exerciseVO" 
+									rows="5"
+									paginator="true" 
+									paginatorTemplate="{CurrentPageReport} {PreviousPageLink} {NextPageLink}"
+		                         	rowsPerPageTemplate="5"
+		                         	emptyMessage="Nenhum registro foi encontrado.">
+								    <p:column headerText="Id" sortBy="#{exerciseVO.exerciseId}">
+								        <div align="center">
+								        	<h:outputText value="#{exerciseVO.exerciseId}" />
+								        </div>
+								    </p:column>
+								    <p:column headerText="Nome" sortBy="#{exerciseVO.name}">
+								        <div align="center">
+								        	<h:outputText value="#{exerciseVO.name}" />
+								        </div>
+								    </p:column>
+								    <p:column headerText="Tipo" sortBy="#{exerciseVO.exerciseType}">
+								        <div align="center">
+								        	<h:outputText value="#{exerciseVO.exerciseTypeName}" />
+								        </div>
+								    </p:column>
+								    <p:column headerText="Sequência" sortBy="#{exerciseVO.sequenceNumber}">
+								        <div align="center">
+								        	<h:outputText value="#{exerciseVO.sequenceNumber}" />
+								        </div>
+								    </p:column>
+								</p:dataTable>
+							</div>
+						</div>
+						<div class="field-container-default" style="height: auto;">
+							<h:outputLabel id="labelNotes" for="txtNotes" value="Notas" styleClass="label-field" /><br></br>
+							<p:inputTextarea id="txtNotes" value="#{classController.notesForm}" rows="4" cols="50" style="width: 630px;" readonly="#{courseController.readOnly}" title="Adicione à Aula Observações, Comentários, URLs, etc." />
+						</div>												
+						<h:outputLabel id="labelAttachment" value="Anexos" styleClass="label-field" />
+						<div class="field-container-default table-border" style="height: auto; width: 598px;" id="container-search-result">
+            				<p:fileUpload fileUploadListener="#{classController.doAttachmentUpload}" 
+            					multiple="true" 
+            					sizeLimit="20971520" 
+            					allowTypes="/(\.|\/)(txt|doc|docx|xls|xlsx|pdf|jpeg|jpg|png|gif)$/" 
+            					showButtons="false" 
+            					label="Selecionar Arquivo" 
+            					auto="true" 
+            					update="resultTableAttachments"
+            					style="float: right;"
+            					rendered="#{userController.isUserInRole('papel_curso_manter')}"/>
+            				<p:dataTable id="resultTableAttachments" styleClass="resultTable" value="#{classController.attachmentVOList}" var="attachmentVO" 
+								rows="5"
+								paginator="true" 
+								paginatorTemplate="{CurrentPageReport} {PreviousPageLink} {NextPageLink}"
+	                         	rowsPerPageTemplate="5"
+	                         	emptyMessage="Nenhum registro foi encontrado.">
+							    <p:column headerText="Id" sortBy="#{attachmentVO.attachmentId}">
+							        <div align="center">
+							        	<h:outputText value="#{attachmentVO.attachmentId}" />
+							        </div>
+							    </p:column>
+							    <p:column headerText="Nome" sortBy="#{attachmentVO.name}">
+							        <div align="center">
+							        	<h:outputText value="#{attachmentVO.name}" />
+							        </div>
+							    </p:column>
+							    <p:column headerText="Tipo" sortBy="#{attachmentVO.type}">
+							        <div align="center">
+							        	<h:outputText value="#{attachmentVO.type}" />
+							        </div>
+							    </p:column>
+							    <p:column headerText="Tamanho" sortBy="#{attachmentVO.size}">
+							        <div align="center">
+							        	<h:outputText value="#{attachmentVO.size}" />
+							        </div>
+							    </p:column>
+							    <p:column headerText="">
+							        <div style="float:right; display: #{attachmentVO.attachmentId > 0 ? 'block': 'none'};">
+							        	<p:commandButton value="Download" styleClass="button" ajax="false" rendered="#{userController.isUserInRole('papel_curso_manter')}" title="Realiza o Download do Anexo." >
+        									<p:fileDownload value="#{classController.doAttachmentDownload (attachmentVO.attachmentId)}" />
+    									</p:commandButton>							        	
+							        </div>
+							    </p:column>
+							    <p:column headerText="">
+							        <div style="float:right; display: #{attachmentVO.attachmentId > 0 ? 'block': 'none'};">
+							        	<p:commandButton id="buttonDeleteAttachment" value="Excluir" styleClass="button" action="#{classController.doAttachmentDelete (attachmentVO.attachmentId)}" update="resultTableAttachments" rendered="#{userController.isUserInRole('papel_curso_manter')}" title="Exclui o Anexo." />
+							        </div>
+							    </p:column>
+							</p:dataTable>
+        				</div>						
+						<div class="button-container" style="display: margin-top:20px;">
+							<div class="button-container-delete" style="display: #{not courseController.readOnly and classController.classIdForm > 0 ? 'block': 'none'};">
+								<p:commandButton id="buttonDeleteClass" value="Excluir" styleClass="button" actionListener="#{classController.delete}" onclick="hideWithTimer('formUpdateClass\\:messagesUpdateClass');" update="messagesUpdateClass, hiddenClassId, hiddenClassPlanId, txtName, txtDescription, selectTools, txtAverageTime, txtSkills, txtNotes, resultTableSlides, resultTableExercises, resultTableAttachments" style="margin-left:20px;" />
+							</div>
+							<p:commandButton id="buttonBackCourse" value="Voltar" styleClass="button" action="#{classController.backToCourse}" style="margin-right: 20px;" />
+							<p:commandButton id="buttonSaveClass" value="Salvar" styleClass="button" actionListener="#{classController.save}" onclick="hideWithTimer('formUpdateClass\\:messagesUpdateClass');" update="messagesUpdateClass, hiddenClassId, hiddenClassPlanId, txtName, txtDescription, selectTools, txtAverageTime, txtSkills, txtNotes, resultTableSlides, resultTableExercises, resultTableAttachments" rendered="#{not courseController.readOnly}" />
+						</div>
+					</h:form>																		
+				</div>
+			</div>		
+			
+		</ui:define>
+	</ui:composition>
+	
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:p="http://primefaces.org/ui">
+	  	    
+	<ui:composition template="/layout/template.xhtml">
+		<ui:define name="body">
+			
+			<script type="text/javascript">
+				
+				$(document).ready(function() {
+				   	
+					$('.resultTable tr').click( function() {
+						var id = $(this).find('td:first').text().trim();
+						if (parseInt (id) > 0) {
+							redirectTo ('updateTeacher.page?id=' + id);
+						}
+					});
+				   
+			    });	   				
+			
+			</script>
+			
+			<div id="container-content">
+				<!-- menuLeft -->
+				<ui:include src="/layout/menuLeft.xhtml" />
+				<f:metadata>
+					<f:event type="preRenderView" listener="#{teacherController.findAll}" />					
+				</f:metadata>
+				<div id="container-col-right">					
+					<div id="container-button-add">
+						<p:commandButton value="Adicionar" id="buttonAddTeacher" styleClass="button" action="#{teacherController.goToAddTeacher}" rendered="#{not teacherController.readOnly}" />																		
+					</div>
+					<div id="container-search-result">						
+						<p:dataTable id="resultTableTeachers" styleClass="resultTable" value="#{teacherController.teacherVOList}" var="teacherVO" emptyMessage="Nenhum registro foi encontrado.">
+						    <p:column headerText="Id">
+						        <div align="center">
+						        	<h:outputText value="#{teacherVO.teacherId}" />							        	
+						        </div>
+						    </p:column>
+						    <p:column headerText="Nome Completo">						        							        
+       							<div align="center">					        		
+					        		<h:outputText value="#{teacherVO.fullName}" />
+					        	</div>      															        
+						    </p:column>
+						    <p:column headerText="Usuário Associado">						        
+						        <div align="center">
+						        	<h:outputText value="#{teacherVO.userVO.email}" />
+						        </div>
+						    </p:column>						    
+						    <p:column headerText="Fone">
+						        <div align="center">					        		
+					        		<h:outputText value="#{teacherVO.phone}" />
+					        	</div>      															        
+						    </p:column>
+						    <p:column headerText="Celular">
+       							<div align="center">					        		
+					        		<h:outputText value="#{teacherVO.mobile}" />
+					        	</div>
+						    </p:column>
+						</p:dataTable>
+					</div>										
+			    </div>
+			</div>
+			
+		</ui:define>
+	</ui:composition>
+	
+</html>

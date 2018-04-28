@@ -1,0 +1,131 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:p="http://primefaces.org/ui"
+	  xmlns:pe="http://primefaces.org/ui/extensions">
+	  	    
+	<ui:composition template="/layout/template.xhtml">
+		<ui:define name="body">
+			
+			<script type="text/javascript">
+				
+				$(document).ready(function() {				   	
+				     
+				   $("table[role='grid']").delegate("tr", "click", function(e) {
+					   var id = $(this).find('td:first').text().trim();
+						if (parseInt (id) > 0) {
+							redirectTo ('updateCourse.page?id=' + id);
+						}
+				   });
+				   
+				   $("#formSearch\\:txtStartDateFilter").focus(function() {
+					   $('.ui-paginator-current').css ('vertical-align','-5px');					   
+				   });
+				   
+				   $("#formSearch\\:txtEndDateFilter").focus(function() {
+					   $('.ui-paginator-current').css ('vertical-align','-5px');					   
+				   });
+				   
+			   });			   				
+			
+			</script>
+			
+			<div id="container-content">
+				<!-- menuLeft -->
+				<ui:include src="/layout/menuLeft.xhtml" />
+				<f:metadata>
+					<f:event type="preRenderView" listener="#{courseController.findByFilter}" />										
+				</f:metadata>
+				<div id="container-col-right">
+					<p:message id="messagesCourses" globalOnly="true" for="messagesCourses" showDetail="true" autoUpdate="true" closable="true" style="width: 100%; margin-top: 20px;" />
+					<pe:tooltip global="true" fixed="true" myPosition="left center" atPosition="right center"/>
+					<h:form id="formSearch">
+						<div id="container-search-filter">						
+							<div class="column-container-filter">
+								<div class="field-container-filter">
+									<h:outputLabel id="labelStartDateFilter" for="txtStartDateFilter" value="Início Data de Criação" styleClass="label-field" /><br></br>
+									<h:inputText id="txtStartDateFilter" value="#{courseController.startCreationDateFilter}" maxlength="10" title="Data Inicial da Criação do Curso." />
+								</div>
+								<div class="field-container-filter">
+									<h:outputLabel id="labelNameFilter" for="txtNameFilter" value="Nome" styleClass="label-field" /><br></br>
+									<h:inputText id="txtNameFilter" value="#{courseController.nameFilter}" maxlength="200" title="Nome do Curso." />
+								</div>
+							</div>
+							<div class="column-container-filter">
+								<div class="field-container-filter">
+									<h:outputLabel id="labelEndDateFilter" for="txtEndDateFilter" value="Fim Data de Criação" styleClass="label-field" /><br></br>
+									<h:inputText id="txtEndDateFilter" value="#{courseController.endCreationDateFilter}" maxlength="10" title="Data Final da Criação do Curso." />
+								</div>								
+								<div class="field-container-filter">
+									<h:outputLabel id="labelCourseType" for="selectCourseType" value="Tipo do Curso" styleClass="label-field" /><br></br>
+									<h:selectOneMenu id="selectCourseType" value="#{courseController.courseTypeFilter}" title="Os Cursos são divididos em 7 áreas.">
+		   								<f:selectItems value="#{courseController.courseTypeMap}" />
+		   							</h:selectOneMenu>
+								</div>
+							</div>
+							<div class="column-container-filter">
+								<div class="field-container-filter">
+									<h:outputLabel id="labelTeacherId" for="selectTeacherId" value="Professor" styleClass="label-field" /><br></br>
+									<h:selectOneMenu id="selectTeacherId" value="#{courseController.teacherIdFilter}" title="Professor Responsável pelo Curso.">
+		   								<f:selectItems value="#{courseController.teacherIdMap}" />
+		   							</h:selectOneMenu>
+								</div>
+								<div class="button-container-filter">
+									<p:commandButton id="buttonSearch" value="Pesquisar" styleClass="button" style="float:left;" actionListener="#{courseController.findByFilterListener}" onclick="hideWithTimer('messagesCourses');" update=":resultTableCourses, messagesCourses" title="Pesquisar Cursos." />
+								</div>
+							</div>
+						</div>
+					</h:form>					
+					<div id="container-search-result">
+						<div id="container-button-add" style="margin-top: 0px; margin-bottom: 27px; margin-right: 0px;">
+							<p:commandButton value="Adicionar" id="buttonAddCourse" styleClass="button" action="#{courseController.goToAddCourse}" rendered="#{not courseController.readOnly}" title="Adiciona um Novo Curso." />																				
+						</div>
+						<p:dataTable id="resultTableCourses" styleClass="resultTable" value="#{courseController.courseVOList}" var="courseVO" 
+							rows="5" 
+							paginator="true" 
+							paginatorTemplate="{CurrentPageReport} {PreviousPageLink} {NextPageLink}"
+                         	rowsPerPageTemplate="5"
+                         	emptyMessage="Nenhum registro foi encontrado.">
+						    <p:column headerText="Id" sortBy="#{courseVO.courseId}">
+						        <div align="center">
+						        	<h:outputText value="#{courseVO.courseId}" />        	
+						        </div>
+						    </p:column>
+						    <p:column headerText="Nome" sortBy="#{courseVO.name}">
+						        <div style="float: left;">
+						        	<h:outputText value="#{courseVO.name}" />
+						        </div>
+						    </p:column>
+						    <p:column headerText="Tipo do Curso" sortBy="#{courseVO.courseType}">
+						        <div align="center">
+       								<h:outputText value="#{courseVO.courseTypeName}" />       								
+       							</div>
+						    </p:column>
+						    <p:column headerText="Professor" sortBy="#{courseVO.teacherVO.fullName}">
+						        <div align="center">
+       								<h:outputText value="#{courseVO.teacherVO.fullName}" />
+       							</div>
+						    </p:column>
+						    <p:column headerText="Data de Criação" sortBy="#{courseVO.creationDate}">
+       							<div align="center">
+       								<h:outputText value="#{courseVO.creationDate}">
+       									<f:convertDateTime pattern="d/M/yyyy HH:mm" />
+       								</h:outputText>       								
+       							</div>
+						    </p:column>
+						    <p:column headerText="Status" sortBy="#{courseVO.status}">
+       							<div align="center">
+       								<h:outputText value="#{courseVO.status == 1 ? 'Ativo' : 'Inativo'}" />       								
+       							</div>
+						    </p:column>
+						</p:dataTable>
+					</div>																
+				</div>
+			</div>		
+			
+		</ui:define>
+	</ui:composition>
+	
+</html>

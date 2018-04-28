@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:p="http://primefaces.org/ui">
+	  	    
+	<ui:composition template="/layout/template.xhtml">
+		<ui:define name="body">
+			
+			<script type="text/javascript">
+											
+				$(document).ready(function() {
+										
+			    });
+			
+			</script>
+			
+			<div id="container-content">
+				<!-- menuLeft -->
+				<ui:include src="/layout/menuLeft.xhtml" />
+				<div id="container-col-right">
+					<h:form id="formUpdatePayment" styleClass="default-form">
+						<f:metadata>
+    						<f:viewParam name="id" value="#{paymentController.paymentIdForm}"/>
+    						<f:event type="preRenderView" listener="#{paymentController.loadById}" />
+						</f:metadata>
+						<p:messages id="messagesUpdatePayment" globalOnly="true" for="formUpdatePayment:messagesUpdatePayment" showDetail="true" autoUpdate="true" closable="true" style="width: 406px;" />
+						<div class="field-container-default">
+							<h:outputLabel id="labelFullName" for="txtFullName" value="Nome Completo (Aluno)" styleClass="label-field" /><br></br>
+							<h:inputText id="txtFullName" value="#{paymentController.fullNameForm}" readonly="true" />
+						</div>
+						<div class="field-container-default">
+							<h:outputLabel id="labelCPF" for="txtCPF" value="CPF (Aluno)" styleClass="label-field" /><br></br>
+							<h:inputText id="txtCPF" value="#{paymentController.cpfForm}" readonly="true" />
+						</div>
+						<div class="field-container-default">
+							<h:outputLabel id="labelDescription" for="txtDescription" value="Descrição" styleClass="label-field" /><br></br>
+							<h:inputText id="txtDescription" value="#{paymentController.descriptionForm}" readonly="true" />
+						</div>
+						<div class="field-container-default">
+							<h:outputLabel id="labelAmount" for="txtAmount" value="Valor" styleClass="label-field" /><br></br>
+							<h:inputText id="txtAmount" value="#{paymentController.amountForm}" readonly="true" />
+						</div>
+						<div class="field-container-default">
+							<h:outputLabel id="labelPaymentDate" for="txtPaymentDate" value="Data de Pagamento" styleClass="label-field" /><br></br>
+							<h:inputText id="txtPaymentDate" value="#{paymentController.paymentDateForm}" readonly="true">
+								<f:convertDateTime pattern="d/M/yyyy HH:mm" />
+							</h:inputText>
+						</div>
+						<div class="field-container-default">
+							<h:outputLabel id="labelPaymentForMonthYear" for="txtPaymentForMonthYear" value="Pagamento Ref. Mês/Ano" styleClass="label-field" /><br></br>
+							<h:inputText id="txtPaymentForMonthYear" value="#{paymentController.paymentForMonthYearForm}" readonly="true" />
+						</div>
+					</h:form>																				
+				</div>
+			</div>
+			
+		</ui:define>
+	</ui:composition>
+	
+</html>

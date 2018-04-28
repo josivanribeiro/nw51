@@ -1,0 +1,127 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:p="http://primefaces.org/ui">
+	  	    
+	<ui:composition template="/layout/template.xhtml">
+		<ui:define name="body">
+			
+			<script type="text/javascript">
+				
+				$(document).ready(function() {
+				   		   
+				   $("table[role='grid']").delegate("tr", "click", function(e) {
+					   var id = $(this).find('td:first').text().trim();
+						if (parseInt (id) > 0) {
+							redirectTo ('updateStudent.page?id=' + id);
+						}
+				   });
+				   
+				   $("#formSearch\\:txtStartDateFilter").focus(function() {
+					   $('.ui-paginator-current').css ('vertical-align','-5px');					   
+				   });
+				   
+				   $("#formSearch\\:txtEndDateFilter").focus(function() {
+					   $('.ui-paginator-current').css ('vertical-align','-5px');	   
+				   });
+				   
+			   });
+			
+			</script>
+			
+			<div id="container-content">
+				<!-- menuLeft -->
+				<ui:include src="/layout/menuLeft.xhtml" />
+				<f:metadata>
+					<f:event type="preRenderView" listener="#{studentController.findByFilter}" />
+				</f:metadata>
+				<div id="container-col-right">
+				    <p:message id="messagesStudents" globalOnly="true" for="messagesStudents" showDetail="true" autoUpdate="true" closable="true" style="width: 100%; margin-top: 20px;" />					
+					<h:form id="formSearch">
+						<div id="container-search-filter">						
+							<div class="column-container-filter">
+								<div class="field-container-filter">
+									<h:outputLabel id="labelFullNameFilter" for="txtFullNameFilter" value="Nome Completo" styleClass="label-field" /><br></br>
+									<h:inputText id="txtFullNameFilter" value="#{studentController.fullNameFilter}" maxlength="150" />
+								</div>
+								<div class="field-container-filter">
+									<h:outputLabel id="labelEmailFilter" for="txtEmailFilter" value="Email" styleClass="label-field" /><br></br>
+									<h:inputText id="txtEmailFilter" value="#{studentController.emailFilter}" maxlength="100" />
+								</div>
+							</div>
+							<div class="column-container-filter">
+								<div class="field-container-filter">
+									<h:outputLabel id="labelStartDateFilter" for="txtStartDateFilter" value="Início Data de Matrícula" styleClass="label-field" /><br></br>
+									<h:inputText id="txtStartDateFilter" value="#{studentController.startJoinDateFilter}" maxlength="10" />
+								</div>
+								<div class="field-container-filter">
+									<h:outputLabel id="labelCpfFilter" for="txtCpfFilter" value="CPF" styleClass="label-field" /><br></br>
+									<h:inputText id="txtCpfFilter" value="#{studentController.cpfFilter}" maxlength="14" />
+								</div>
+							</div>
+							<div class="column-container-filter">
+								<div class="field-container-filter">
+									<h:outputLabel id="labelEndDateFilter" for="txtEndDateFilter" value="Fim Data de Matrícula" styleClass="label-field" /><br></br>
+									<h:inputText id="txtEndDateFilter" value="#{studentController.endJoinDateFilter}" maxlength="10" />
+								</div>
+								<div class="button-container-filter">
+									<p:commandButton id="buttonSearch" value="Pesquisar" styleClass="button" style="float:left;" actionListener="#{studentController.findByFilterListener}" onclick="hideWithTimer('messagesStudents');" update=":resultTableStudents, messagesStudents" />								
+								</div>
+							</div>
+						</div>
+					</h:form>
+					<div id="container-search-result">
+						<p:dataTable id="resultTableStudents" styleClass="resultTable" value="#{studentController.studentVOList}" var="studentVO" 
+							rows="5" 
+							paginator="true" 
+							paginatorTemplate="{CurrentPageReport} {PreviousPageLink} {NextPageLink}"
+                         	rowsPerPageTemplate="5"
+                         	emptyMessage="Nenhum registro foi encontrado.">
+						    <p:column headerText="Id" sortBy="#{studentVO.studentId}">
+						        <div align="center">
+						        	<h:outputText value="#{studentVO.studentId}" />        	
+						        </div>
+						    </p:column>
+						    <p:column headerText="Email" sortBy="#{studentVO.email}">
+						        <div style="float: left;">
+						        	<h:outputText value="#{studentVO.email}" />
+						        </div>
+						    </p:column>
+						    <p:column headerText="Sexo" sortBy="#{studentVO.gender}">
+						        <div align="center">
+       								<h:outputText value="#{studentVO.gender == 'M' ? 'Masculino' : 'Feminino'}" />       								
+       							</div>
+						    </p:column>						    
+						    <p:column headerText="Nome Completo" sortBy="#{studentVO.fullName}">
+						        <div align="center">
+       								<h:outputText value="#{studentVO.fullName}" />       								
+       							</div>
+						    </p:column>
+						    <p:column headerText="CPF" sortBy="#{studentVO.cpf}">
+       							<div align="center">
+       								<h:outputText value="#{studentVO.cpf}" />		
+       							</div>
+						    </p:column>
+						    <p:column headerText="Data de Matrícula" sortBy="#{studentVO.joinDate}">
+       							<div align="center">
+       								<h:outputText value="#{studentVO.joinDate}">
+       									<f:convertDateTime pattern="d/M/yyyy HH:mm" />
+       								</h:outputText>       								
+       							</div>
+						    </p:column>
+						    <p:column headerText="Status" sortBy="#{studentVO.status}">
+       							<div align="center">
+       								<h:outputText value="#{studentVO.status == 1 ? 'Ativo' : 'Inativo'}" />       								
+       							</div>
+						    </p:column>
+						</p:dataTable>
+					</div>																
+				</div>
+			</div>		
+			
+		</ui:define>
+	</ui:composition>
+	
+</html>

@@ -1,0 +1,148 @@
+<ui:composition template="/layout/template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="body">
+
+		<script type="text/javascript">
+			
+		</script>
+
+		<!-- container section start -->
+		<section id="container" class="">
+
+			<!--header begin-->
+			<header class="header green-bg">
+				<ui:include src="/layout/headerMobile.xhtml" />
+				<ui:include src="/layout/header.xhtml" />
+			</header>
+			<!--header end-->
+						
+			<ui:include src="/layout/sidebar.xhtml" />
+
+			<!--main content start-->
+			<section id="main-content">
+				<section class="wrapper">
+				
+					<!--overview start-->
+					<div class="row">
+						<div class="col-lg-12">
+							<h3 class="page-header">
+								<i class="fa icon-profile-32"></i> Perfil
+							</h3>							
+						</div>
+					</div>
+				
+					<div class="row">
+					
+					     <h:form id="formProfile" role="form" styleClass="common-form">
+					     	 <h:inputHidden value="#{studentController.studentIdForm}" id="hiddenStudentId" />                         
+					     	 <h:inputHidden value="#{studentController.addressIdForm}" id="hiddenAddressId" />
+                         	 <f:metadata>
+	    						<f:event type="preRenderView" listener="#{studentController.loadById}" />
+							 </f:metadata>
+							 <p:messages id="messagesProfile" globalOnly="true" for="formProfile:messagesProfile" showDetail="true" autoUpdate="true" closable="true" styleClass="ui-messages-width padding-left padding-right" />
+                             <div class="form-group padding-left padding-right">
+                                 <label for="txtFullName">Nome completo</label>
+                                 <h:inputText id="txtFullName" value="#{studentController.fullNameForm}" maxlength="150" styleClass="form-control" />
+                             </div>
+                             <div class="form-group padding-left padding-right">
+                                 <label for="txtEmail">Email</label>
+                                 <h:inputText id="txtEmail" value="#{studentController.emailForm}" maxlength="100" styleClass="form-control" />
+                             </div>
+                             
+                             <fieldset>
+    						 	<legend>Alterar senha</legend>
+    						 	<div class="form-group">
+	                                 <label for="txtPwd">Senha</label>
+	                                 <h:inputSecret id="txtPwd" value="#{studentController.pwdForm}" maxlength="20" styleClass="form-control" />
+                             	</div>
+	                            <div class="form-group">
+	                                 <label for="txtPwdConfirm">Confirmação da senha</label>
+	                                 <h:inputSecret id="txtPwdConfirm" value="#{studentController.pwdConfirmForm}" maxlength="20" styleClass="form-control" />
+	                            </div>	
+    						 </fieldset>                             
+                             
+                             <div class="form-group padding-left padding-right">
+                                 <label for="txtCpf">CPF</label>
+                                 <h:inputText id="txtCpf" value="#{studentController.cpfForm}" styleClass="form-control" maxlength="14" />
+                             </div>
+                             <div class="form-group padding-left padding-right">
+                                 <label for="txtPhone">Telefone</label>
+                                 <h:inputText id="txtPhone" value="#{studentController.phoneForm}" styleClass="form-control" maxlength="13" />
+                             </div>
+                             <div class="form-group padding-left padding-right">
+                                 <label for="txtMobile">Celular</label>
+                                 <h:inputText id="txtMobile" value="#{studentController.mobileForm}" styleClass="form-control" maxlength="13" />
+                             </div>
+                             <div class="form-group padding-left padding-right">
+                                 <label for="txtCep">CEP</label>
+                                 <h:inputText id="txtCep" value="#{studentController.cepForm}" styleClass="form-control" maxlength="9" />
+                             </div>
+                             <div class="form-group padding-left padding-right">
+                                 <label for="txtAddress1">Endereço</label>
+                                 <h:inputText id="txtAddress1" value="#{studentController.address1Form}" styleClass="form-control" maxlength="100" />
+                             </div>
+                             <div class="form-group padding-left padding-right" style="margin-bottom: 0px;">
+                                 <div class="row">
+                                     <div class="col-lg-2">                                        
+                                         <label for="txtNumber" class="label-width">Número</label>
+                        				 <h:inputText id="txtNumber" value="#{studentController.numberForm}" styleClass="common-form-with-col" maxlength="10" />
+                                     </div>
+                                     <div class="col-lg-3">
+                                         <label for="txtAddress2" class="label-width">Complemento</label>
+                        				 <h:inputText id="txtAddress2" value="#{studentController.address2Form}" styleClass="common-form-with-col" maxlength="50" />
+                                     </div>
+                                 </div>                          
+                             </div>                             
+                             <div class="form-group padding-left padding-right">
+                                 <label for="txtNeighborhood">Bairro</label>
+                                 <h:inputText id="txtNeighborhood" value="#{studentController.neighborhoodForm}" styleClass="form-control" maxlength="80" />
+                             </div>
+                             <div class="form-group padding-left padding-right" style="margin-bottom:0px;">
+                                 <div class="row">
+                                     <div class="col-lg-2">
+                                         <label for="txtCity" class="label-width">Cidade</label>
+                        				 <h:inputText id="txtCity" value="#{studentController.cityForm}" styleClass="common-form-with-col" maxlength="100" />
+                                     </div>
+                                     <div class="col-lg-3">
+                                         <label for="selectState" class="label-width">Estado</label>
+                        				 <h:selectOneMenu id="selectStateId" value="#{studentController.stateIdForm}" styleClass="common-form-with-col" style="height: 40px;">
+	   									 	<f:selectItems value="#{studentController.stateIdMap}" />
+	   									 </h:selectOneMenu>
+                                     </div>
+                                 </div>                          
+                             </div>
+                             <div class="checkbox padding-left padding-right">
+                                 <label style="display:#{studentController.socialProgramForm ? 'block':'none'};">
+                                     <h:selectBooleanCheckbox id="chkSocialProgram" value="#{studentController.socialProgramForm}" disabled="true" />  Programa social
+                                 </label>
+                             </div>
+                             <div class="form-group padding-left padding-right">
+                             	<p:commandButton id="buttonSaveProfile" 
+                             		value="Salvar" 
+                             		styleClass="btn" 
+                             		actionListener="#{studentController.update}"
+                             		onclick="javascript:scrollToTop();hideWithTimer('formProfile\\:messagesProfile');" 
+                             	    update="messagesProfile, hiddenStudentId, hiddenAddressId, txtFullName, txtEmail, txtPwd, txtPwdConfirm, txtCpf, txtPhone, txtMobile, txtCep, txtAddress1, txtNumber, txtAddress2, txtNeighborhood, txtCity, selectStateId, chkSocialProgram" />
+                             </div>
+                         </h:form>
+						
+					</div>
+					<!--/.row-->
+					
+					
+                  <div class="widget-foot">
+                    <!-- Footer goes here -->
+                  </div>
+                  
+          	  </section>
+      	  </section>
+      <!--main content end-->
+  </section>
+  <!-- container section start -->
+	</ui:define>
+</ui:composition>

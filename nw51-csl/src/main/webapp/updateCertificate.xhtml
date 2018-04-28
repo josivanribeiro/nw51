@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:p="http://primefaces.org/ui">
+	  	    
+	<ui:composition template="/layout/template.xhtml">
+		<ui:define name="body">
+			
+			<script type="text/javascript">
+											
+				$(document).ready(function() {
+										
+			    });
+			
+			</script>
+			
+			<div id="container-content">
+				<!-- menuLeft -->
+				<ui:include src="/layout/menuLeft.xhtml" />
+				<div id="container-col-right">
+					<h:form id="formUpdateCertificate" styleClass="default-form">
+						<f:metadata>
+    						<f:viewParam name="id" value="#{certificateController.certificateIdForm}"/>
+    						<f:event type="preRenderView" listener="#{certificateController.loadById}" />
+						</f:metadata>
+						<p:messages id="messagesUpdateCertificate" globalOnly="true" for="formUpdateCertificate:messagesUpdateCertificate" showDetail="true" autoUpdate="true" closable="true" style="width: 406px;" />
+						<div class="field-container-default">
+							<h:outputLabel id="labelFullName" for="txtFullName" value="Nome Completo (Aluno)" styleClass="label-field" /><br></br>
+							<h:inputText id="txtFullName" value="#{certificateController.studentNameForm}" readonly="true" />
+						</div>
+						<div class="field-container-default">
+							<h:outputLabel id="labelCourse" for="txtCourse" value="Curso" styleClass="label-field" /><br></br>
+							<h:inputText id="txtCourse" value="#{certificateController.courseNameForm}" readonly="true" />
+						</div>
+						<div class="field-container-default">
+							<h:outputLabel id="labelCreationDate" for="txtCreationDate" value="Data de Criação" styleClass="label-field" /><br></br>
+							<h:inputText id="txtCreationDate" value="#{certificateController.creationDateForm}" readonly="true">
+								<f:convertDateTime pattern="d/M/yyyy HH:mm" />
+							</h:inputText>
+						</div>						
+					</h:form>																				
+				</div>
+			</div>
+			
+		</ui:define>
+	</ui:composition>
+	
+</html>

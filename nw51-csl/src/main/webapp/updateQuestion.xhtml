@@ -1,0 +1,101 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:p="http://primefaces.org/ui"
+	  xmlns:pe="http://primefaces.org/ui/extensions">
+	  	    
+	<ui:composition template="/layout/template.xhtml">
+		<ui:define name="body">
+			
+			<script type="text/javascript">
+											
+				$(document).ready(function() {
+					 
+					$("#formUpdateQuestion\\:buttonSaveQuestion").click(function() {
+						$('body').ScrollTo();
+				    });					
+					
+					$("#formUpdateQuestion\\:buttonDeleteQuestion").click(function() {
+						$('body').ScrollTo();
+				    });
+					
+					$('#formUpdateQuestion\\:txtEnunciation').maxlength({max: 800, showFeedback: false});
+					
+					$('#formUpdateQuestion\\:txtAlternativeA').maxlength({max: 300, showFeedback: false});
+					$('#formUpdateQuestion\\:txtAlternativeB').maxlength({max: 300, showFeedback: false});
+					$('#formUpdateQuestion\\:txtAlternativeC').maxlength({max: 300, showFeedback: false});
+					$('#formUpdateQuestion\\:txtAlternativeD').maxlength({max: 300, showFeedback: false});
+					$('#formUpdateQuestion\\:txtAlternativeE').maxlength({max: 300, showFeedback: false});
+					
+			    });
+			
+			</script>
+			
+			<div id="container-content">
+				<!-- menuLeft -->
+				<ui:include src="/layout/menuLeft.xhtml" />
+				<div id="container-col-right">
+					<h:form id="formUpdateQuestion">
+						<h:inputHidden value="#{questionController.questionIdForm}" id="hiddenQuestionId" />
+						<h:inputHidden value="#{questionController.exerciseIdForm}" id="hiddenExerciseId" />
+						<f:metadata>
+    						<f:viewParam name="id" value="#{questionController.questionIdForm}"/>
+    						<f:viewParam name="exerciseId" value="#{questionController.exerciseIdForm}"/>
+    						<f:event type="preRenderView" listener="#{questionController.loadById}" />
+						</f:metadata>
+						<p:messages id="messagesUpdateQuestion" globalOnly="true" for="formUpdateQuestion:messagesUpdateQuestion" showDetail="true" autoUpdate="true" closable="true" style="width: 97%;" />
+						<pe:tooltip global="true" fixed="true" myPosition="left center" atPosition="right center"/>						
+						<div class="field-container-default" style="height: auto;">
+							<h:outputLabel id="labelEnunciation" for="txtEnunciation" value="Enunciado" styleClass="label-field" /><br></br>
+							<p:inputTextarea id="txtEnunciation" value="#{questionController.enunciationForm}" rows="6" cols="50" style="width: 630px;" readonly="#{courseController.readOnly}" title="Enunciado da Questão." />
+						</div>
+						
+						<div class="field-container-default" style="height: auto;">
+							<h:outputLabel id="labelAlternativeA" for="txtAlternativeA" value="Alternativa A" styleClass="label-field" /><br></br>
+							<p:inputTextarea id="txtAlternativeA" value="#{questionController.alternativeAForm}" rows="3" cols="50" style="width: 630px;" readonly="#{courseController.readOnly}" title="Texto da Alternativa A." />
+						</div>
+						
+						<div class="field-container-default" style="height: auto;">
+							<h:outputLabel id="labelAlternativeB" for="txtAlternativeB" value="Alternativa B" styleClass="label-field" /><br></br>
+							<p:inputTextarea id="txtAlternativeB" value="#{questionController.alternativeBForm}" rows="3" cols="50" style="width: 630px;" readonly="#{courseController.readOnly}" title="Texto da Alternativa B." />
+						</div>
+						
+						<div class="field-container-default" style="height: auto;">
+							<h:outputLabel id="labelAlternativeC" for="txtAlternativeC" value="Alternativa C" styleClass="label-field" /><br></br>
+							<p:inputTextarea id="txtAlternativeC" value="#{questionController.alternativeCForm}" rows="3" cols="50" style="width: 630px;" readonly="#{courseController.readOnly}" title="Texto da Alternativa C." />
+						</div>
+						
+						<div class="field-container-default" style="height: auto;">
+							<h:outputLabel id="labelAlternativeD" for="txtAlternativeD" value="Alternativa D" styleClass="label-field" /><br></br>
+							<p:inputTextarea id="txtAlternativeD" value="#{questionController.alternativeDForm}" rows="3" cols="50" style="width: 630px;" readonly="#{courseController.readOnly}" title="Texto da Alternativa D." />
+						</div>
+						
+						<div class="field-container-default" style="height: auto;">
+							<h:outputLabel id="labelAlternativeE" for="txtAlternativeE" value="Alternativa E" styleClass="label-field" /><br></br>
+							<p:inputTextarea id="txtAlternativeE" value="#{questionController.alternativeEForm}" rows="3" cols="50" style="width: 630px;" readonly="#{courseController.readOnly}" title="Texto da Alternativa E." />
+						</div>
+						
+						<div class="field-container-default">
+							<h:outputLabel id="labelAlternativeCorrect" for="selectAlternativeCorrect" value="Alternativa Correta" styleClass="label-field" /><br></br>
+							<h:selectOneMenu id="selectAlternativeCorrect" value="#{questionController.alternativeCorrectForm}" disabled="#{courseController.readOnly}" title="A Alternativa Correta.">
+   								<f:selectItems value="#{questionController.alternativeMap}" />
+   							</h:selectOneMenu>
+						</div>												
+						
+						<div class="button-container">
+							<div class="button-container-delete" style="display: #{not courseController.readOnly and questionController.questionIdForm ne null ? 'block': 'none'};">
+								<p:commandButton id="buttonDeleteQuestion" value="Excluir" styleClass="button" actionListener="#{questionController.delete}" onclick="hideWithTimer('formUpdateQuestion\\:messagesUpdateQuestion');" update="messagesUpdateQuestion, hiddenQuestionId, txtEnunciation, txtAlternativeA, txtAlternativeB, txtAlternativeC, txtAlternativeD, txtAlternativeE, selectAlternativeCorrect" style="margin-left:20px;" />
+							</div>
+							<p:commandButton id="buttonBackClass" value="Voltar" styleClass="button" action="#{questionController.backToExercise}" style="margin-right: 20px;" />
+							<p:commandButton id="buttonSaveQuestion" value="Salvar" styleClass="button" actionListener="#{questionController.save}" onclick="hideWithTimer('formUpdateQuestion\\:messagesUpdateQuestion');" update="messagesUpdateQuestion, hiddenQuestionId, txtEnunciation, txtAlternativeA, txtAlternativeB, txtAlternativeC, txtAlternativeD, txtAlternativeE, selectAlternativeCorrect" rendered="#{not courseController.readOnly}" />
+						</div>
+					</h:form>																				
+				</div>
+			</div>		
+			
+		</ui:define>
+	</ui:composition>
+	
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:p="http://primefaces.org/ui"
+	  xmlns:pe="http://primefaces.org/ui/extensions">
+	  	    
+	<ui:composition template="/layout/template.xhtml">
+		<ui:define name="body">
+			
+			<script type="text/javascript">
+											
+				$(document).ready(function() {
+					
+					$("table[role='grid']").delegate("tr", "click", function(e) {
+				    	var questionId = $(this).find('td:first').text().trim();
+						if (parseInt (questionId) > 0) {
+							redirectTo ('updateQuestion.page?id=' + questionId);
+						}
+				    });
+					 
+					$("#formUpdateExercise\\:buttonSaveExercise").click(function() {
+						$('body').ScrollTo();
+				    });					
+					
+					$("#formUpdateExercise\\:buttonDeleteExercise").click(function() {
+						$('body').ScrollTo();
+				    });					
+					
+			    });
+			
+			</script>
+			
+			<div id="container-content">
+				<!-- menuLeft -->
+				<ui:include src="/layout/menuLeft.xhtml" />
+				<div id="container-col-right">
+					<h:form id="formUpdateExercise">
+						<h:inputHidden value="#{exerciseController.classIdForm}" id="hiddenClassId" />
+						<h:inputHidden value="#{exerciseController.exerciseIdForm}" id="hiddenExerciseId" />
+						<f:metadata>
+    						<f:viewParam name="id" value="#{exerciseController.exerciseIdForm}"/>
+    						<f:viewParam name="classId" value="#{exerciseController.classIdForm}"/>
+    						<f:viewParam name="toolType" value="#{exerciseController.exerciseTypeForm}"/>
+    						<f:event type="preRenderView" listener="#{exerciseController.loadById}" />
+						</f:metadata>
+						<p:messages id="messagesUpdateExercise" globalOnly="true" for="formUpdateExercise:messagesUpdateExercise" showDetail="true" autoUpdate="true" closable="true" style="width: 97%;" />
+						<pe:tooltip global="true" fixed="true" myPosition="left center" atPosition="right center"/>
+						<div class="field-container-default">
+							<h:outputLabel id="labelName" for="txtName" value="Nome" styleClass="label-field" /><br></br>
+							<h:inputText id="txtName" value="#{exerciseController.nameForm}" readonly="#{courseController.readOnly}" maxlength="200" title="Nome do Exercício." />
+						</div>
+						<div class="field-container-default">
+							<h:outputLabel id="labelExerciseType" for="selectExerciseType" value="Tipo de Exercício" styleClass="label-field" /><br></br>
+							<h:selectOneMenu id="selectExerciseType" value="#{exerciseController.exerciseTypeForm}" disabled="#{courseController.readOnly}" title="Tipo do Exercício: Exercício ou Desafio.">
+   								<f:selectItems value="#{exerciseController.exerciseTypeMap}" />
+   							</h:selectOneMenu>
+						</div>
+												
+						<h:outputLabel id="labelQuestion" value="Questões" styleClass="label-field" />
+						<div id="questions-container" class="field-container-default" style="height: auto;">
+							<div class="field-container-default table-border" style="height: auto; width:598px;" id="container-search-result">
+								<div id="container-button-add" style="margin-top: 0px; margin-bottom: 27px; margin-right: 51px;">
+									<p:commandButton value="Adicionar Questão" id="buttonAddQuestion" styleClass="button" action="#{exerciseController.goToAddQuestion}" style="width: 131px;" rendered="#{not courseController.readOnly}" title="Adiciona uma nova Questão." />
+								</div>
+								<p:dataTable id="resultTableQuestions" styleClass="resultTable" value="#{exerciseController.questionVOList}" var="questionVO" 
+									rows="5"
+									paginator="true" 
+									paginatorTemplate="{CurrentPageReport} {PreviousPageLink} {NextPageLink}"
+		                         	rowsPerPageTemplate="5"
+		                         	emptyMessage="Nenhum registro foi encontrado.">
+								    <p:column headerText="Id" sortBy="#{questionVO.questionId}">
+								        <div align="center">
+								        	<h:outputText value="#{questionVO.questionId}" />
+								        </div>
+								    </p:column>
+								    <p:column headerText="Enunciado" sortBy="#{questionVO.enunciation}">
+								        <div style="float: left;">
+								        	<h:outputText value="#{questionVO.shortEnunciation}" />
+								        </div>
+								    </p:column>
+								</p:dataTable>
+							</div>
+						</div>
+						<div class="button-container">
+							<div class="button-container-delete" style="display: #{not courseController.readOnly and exerciseController.exerciseIdForm ne null ? 'block': 'none'};">
+								<p:commandButton id="buttonDeleteExercise" value="Excluir" styleClass="button" actionListener="#{exerciseController.delete}" onclick="hideWithTimer('formUpdateExercise\\:messagesUpdateExercise');" update="messagesUpdateExercise, hiddenExerciseId, txtName, selectExerciseType, resultTableQuestions" style="margin-left:20px;" />
+							</div>
+							<p:commandButton id="buttonBackClass" value="Voltar" styleClass="button" action="#{exerciseController.backToClass}" style="margin-right: 20px;" />
+							<p:commandButton id="buttonSaveExercise" value="Salvar" styleClass="button" actionListener="#{exerciseController.save}" onclick="hideWithTimer('formUpdateExercise\\:messagesUpdateExercise');" update="messagesUpdateExercise, hiddenExerciseId, txtName, selectExerciseType, resultTableQuestions" rendered="#{not courseController.readOnly}" />
+						</div>
+					</h:form>																				
+				</div>
+			</div>		
+			
+		</ui:define>
+	</ui:composition>
+	
+</html>
